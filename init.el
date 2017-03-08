@@ -145,7 +145,9 @@
   :mode "\\.md\\'")
 
 (use-package google-c-style
-  :ensure t)
+  :ensure t
+  :config
+  (add-hook 'c-mode-common-hook 'google-set-c-style))
 
 ;; gtags
 (use-package gtags
