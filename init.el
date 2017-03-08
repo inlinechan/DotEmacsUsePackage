@@ -146,6 +146,67 @@
 
 (use-package google-c-style
   :ensure t)
+
+;; gtags
+(use-package gtags
+  :load-path "lisp/"
+  :init
+  (setq gtags-path-style 'relative
+        gtags-ignore-case nil)
+  :commands (gtags-mode gtags-find-file)
+  :bind (("C-c C-f" . gtags-find-file)
+         :map gtags-select-mode-map
+         ("q" . gtags-pop-stack)
+         ("\eo" . gtags-select-tag-other-window-focus)
+         ("\e*" . gtags-pop-stack)
+         ("\e." . hc/tag-from-here)
+         ("\e," . hc/find-rtag)
+         ("\ep" . previous-line)
+         ("\en" . next-line)
+         :map gtags-mode-map
+         ("\e*" . gtags-pop-stack)
+         ("\e." . hc/tag-from-here)
+         ("\e," . hc/find-rtag))
+  :config
+  (add-hook 'gtags-select-mode-hook
+            (lambda ()
+              (setq hl-line-face 'underline)
+              (hl-line-mode 1)))
+
+  (defun hc/tag-from-here ()
+    (interactive)
+    (if (gtags-get-rootpath)
+        (if current-prefix-arg
+            (gtags-find-tag)
+          (gtags-find-tag-from-here))
+      (message "No gtags index found")))
+
+  (defun hc/find-rtag ()
+    (interactive)
+    (if (gtags-get-rootpath)
+        (gtags-find-rtag)
+      (message "No gtags index found"))))
+
+(defun enable-gtags-mode ()
+  (gtags-mode 1))
+
+(dolist (mode (list 'c++-mode-hook
+                    'c-mode-hook
+                    'dired-mode-hook))
+  (add-hook mode 'enable-gtags-mode))
+
+(use-package jedi
+  :ensure t
+  :init
+  (setq jedi:key-goto-definition (kbd "C-c ."))
+  :pin melpa)
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (jedi:setup)
+            (jedi:ac-setup)
+            (jedi:start-server)))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -153,7 +214,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (jedi tern-auto-complete yasnippet web-mode use-package tern markdown-mode magit json-mode jade google-c-style flycheck clang-format bookmark+))))
+    (tern-auto-complete yasnippet web-mode use-package tern markdown-mode magit json-mode jade google-c-style flycheck clang-format bookmark+))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
