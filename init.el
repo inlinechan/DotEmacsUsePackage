@@ -1,76 +1,15 @@
-;; ;; Copyright (C) 2013 Hyungchan Kim
+;;; init.el --- My own emacs configuration
 
-;; ;; Author: Hyungchan Kim <inlinechan@gmail.com>
-;; ;; Keywords: lisp
-;; ;; Version: 0.1
+;; Copyright (C) 2017 Hyungchan Kim
 
-;; ;; This program is free software; you can redistribute it and/or modify
-;; ;; it under the terms of the GNU General Public License as published by
-;; ;; the Free Software Foundation, either version 3 of the License, or
-;; ;; (at your option) any later version.
+;; Author: Hyungchan Kim <inlinechan@gmail.com>
+;; Keywords: lisp use-package
 
-;; ;; This program is distributed in the hope that it will be useful,
-;; ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; ;; GNU General Public License for more details.
+;;; Commentary:
 
-;; ;; You should have received a copy of the GNU General Public License
-;; ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;; `use-package'
 
-;; ;;; Commentary:
-
-;; ;;; Code:
-
-
-;; ;; Added by Package.el.  This must come before configurations of
-;; ;; installed packages.  Don't delete this line.  If you don't want it,
-;; ;; just comment it out by adding a semicolon to the start of the line.
-;; ;; You may delete these explanatory comments.
-;; (require 'cl)                           ; common lisp goodies, loop
-
-;; (add-to-list 'load-path "~/.emacs.d/lisp")
-;; (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-;; (add-to-list 'load-path "~/.emacs.d/hc")
-
-;; (require 'hc-el-get)
-;; (require 'hc-local-packages)
-;; (require 'hc-general)
-;; (require 'hc-general-key)
-;; (require 'hc-ido)
-;; (require 'hc-korean)
-;; (require 'hc-ui)
-;; (require 'hc-shell)
-;; ;; (require 'hc-cedet)
-;; (require 'hc-newsticker)
-;; (require 'hc-gnus)
-;; (require 'hc-org)
-;; (require 'js-beautify)
-;; (require 'hc-webos)
-;; ;; (require 'flycheck-virtualenv)
-
-;; ;; (require 'package)
-;; ;; (add-to-list 'package-archives
-;; ;;              '("melpa" . "https://melpa.org/packages/") t)
-;; ;; (package-initialize)
-;; ;; (package-install 'jade)
-
-;; ;;; init ends here
-;; (custom-set-faces
-;;  ;; custom-set-faces was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  )
-;; (custom-set-variables
-;;  ;; custom-set-variables was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(bmkp-last-as-first-bookmark-file "~/.emacs.bmk")
-;;  '(package-selected-packages (quote (jade jade-mode "jade" "jade" seq)))
-;;  '(safe-local-variable-values (quote ((python-shell-interpreter . "python3")))))
-
-
+;;; Code:
 
 (add-to-list 'load-path "~/.emacs.d/hc")
 
@@ -98,19 +37,17 @@
   (require 'use-package))
 
 (use-package jade
-  :ensure t
-  :defer t)
+  :commands jade-connect-to-chrome
+  :ensure t)
 
 (use-package company
   :ensure t
-  :defer t
   :init (add-hook 'after-init-hook 'global-company-mode)
   :config
   (setq company-backends (delete 'company-semantic company-backends)))
 
 (use-package org
-  :ensure
-  t
+  :ensure t
   :config
   (require 'hc-org))
 
@@ -127,14 +64,8 @@
 
 (use-package magit
   :ensure t
-  :defer t
   :bind ("C-c s" . magit-status)
   :config
-  ;; (require 'vc)
-  ;; (remove-hook 'find-file-hooks 'vc-find-file-hook)
-
-  ;; (global-set-key (kbd "C-c s") 'magit-status)
-
   ;; https://github.com/magit/magit/issues/1743
   ;; use 2way ediff like we used to do in version 1.x
   (setq magit-ediff-dwim-show-on-hunks t)
@@ -144,7 +75,6 @@
 
 (use-package json-mode
   :ensure t
-  :defer t
   :config
   (eval-after-load 'flycheck
     `(progn
@@ -153,12 +83,10 @@
        (add-hook 'json-mode-hook 'flycheck-mode))))
 
 (use-package bookmark+
-  :ensure t
-  :defer t)
+  :ensure t)
 
 (use-package clang-format
   :ensure t
-  :defer t
   :config
   (add-hook 'c++-mode-hook
             (lambda ()
@@ -167,26 +95,21 @@
 
 (use-package flycheck
   :ensure t
-  :defer t
   :init (global-flycheck-mode)
   :config
   (add-hook 'c++-mode-hook
-            #'(lambda ()
-                (setq flycheck-gcc-language-standard "c++11"
-                      flycheck-clang-language-standard "c++11"
-                      flycheck-clang-warnings '("all" "extra" "no-c++11-extensions"))))
+            (lambda ()
+              (setq flycheck-gcc-language-standard "c++11"
+                    flycheck-clang-language-standard "c++11"
+                    flycheck-clang-warnings '("all" "extra" "no-c++11-extensions"))))
 
   (add-to-list 'flycheck-disabled-checkers 'python-flake8)
   (add-to-list 'flycheck-disabled-checkers 'python-pylint))
 
 (use-package web-mode
   :ensure t
-  :defer t
-  :mode ("\\.jsx\\'" "\\.jsx$")
+  :mode ("\\.jsx\\'" "\\.html$")
   :config
-  ;; (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-  ;; (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-
   (setq web-mode-markup-indent-offset 2
         web-mode-css-indent-offset 2
         web-mode-code-indent-offset 2
@@ -199,25 +122,18 @@
 
 (use-package yasnippet
   :ensure t
-  :defer t
   :config
   (yas-global-mode 1)
-  (add-hook 'term-mode-hook #'(lambda() (yas-minor-mode -1))))
+  (add-hook 'term-mode-hook (lambda() (yas-minor-mode -1))))
 
 (use-package tern
   :ensure t
-  :defer t
   :config
-  
   (use-package tern-auto-complete
     :ensure t
     :config
     (setq tern-ac-on-dot t)
     (tern-ac-setup))
-
-  ;; (require 'tern-auto-complete)
-  ;; (setq tern-ac-on-dot t)
-  ;; (tern-ac-setup)
 
   (add-hook 'js2-mode-hook
             (lambda ()
@@ -226,12 +142,10 @@
 
 (use-package markdown-mode
   :ensure t
-  :defer t
   :mode "\\.md\\'")
 
 (use-package google-c-style
   :ensure t)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -239,7 +153,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (google-c-style bookmark+ json-mode markdown-mode tern-auto-complete tern yasnippet web-mode flycheck clang-format magit use-package jade))))
+    (jedi tern-auto-complete yasnippet web-mode use-package tern markdown-mode magit json-mode jade google-c-style flycheck clang-format bookmark+))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
