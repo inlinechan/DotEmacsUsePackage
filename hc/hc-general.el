@@ -1,14 +1,25 @@
-;; mark could be noticable
-(setq-default transient-mark-mode t)
 
-;; no backup ( start with ~(tilt) )
-(setq-default make-backup-files nil)
+(setq-default transient-mark-mode t
+              make-backup-files nil
+              fill-column 80
+              default-major-mode 'text-mode
 
-;; column limit 80
-(setq fill-column 80)
+              ;;    If `gdb-many-windows' is non-`nil', then `M-x gdb' displays the
+              ;; following frame layout:
+              ;;      +--------------------------------+--------------------------------+
+              ;;      |   GUD buffer (I/O of GDB)      |   Locals/Registers buffer      |
+              ;;      |--------------------------------+--------------------------------+
+              ;;      |   Primary Source buffer        |   I/O buffer for debugged pgm  |
+              ;;      |--------------------------------+--------------------------------+
+              ;;      |   Stack buffer                 |   Breakpoints/Threads buffer   |
+              ;;      +--------------------------------+--------------------------------+
+              gdb-many-windows t
 
-;; text-mode is default
-(setq default-major-mode 'text-mode)
+              ;; notab by default
+              indent-tabs-mode nil
+              c-basic-offset 4
+              default-tab-width 4
+              tab-width 4)
 
 ;; parenthesis matching
 ;; http://www.emacswiki.org/cgi-bin/wiki/parenthesismatching
@@ -33,23 +44,6 @@ vi style of % jumping to matching brace."
                                     (if (> (frame-width) 150)
                                         (split-window-horizontally arg)
                                       (split-window-vertically arg))))
-;; (setq ediff-split-window-function 'split-window-horizontally)
-
-;;    If `gdb-many-windows' is non-`nil', then `M-x gdb' displays the
-;; following frame layout:
-
-;;      +--------------------------------+--------------------------------+
-;;      |   GUD buffer (I/O of GDB)      |   Locals/Registers buffer      |
-;;      |--------------------------------+--------------------------------+
-;;      |   Primary Source buffer        |   I/O buffer for debugged pgm  |
-;;      |--------------------------------+--------------------------------+
-;;      |   Stack buffer                 |   Breakpoints/Threads buffer   |
-;;      +--------------------------------+--------------------------------+
-(setq gdb-many-windows t)
-
-;; dircmp-mode
-;; (load "~/.emacs.d/dircmp.el")
-
 ;; ediff marked file
 (defun dired-ediff-marked-files ()
   "Run ediff on marked ediff files."
@@ -149,11 +143,6 @@ vi style of % jumping to matching brace."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; notab
 
-;; notab by default
-(setq-default indent-tabs-mode nil
-              c-basic-offset 4
-              default-tab-width 4
-              tab-width 4)
 
 (defun hc/add-styles ()
   "Add c/c++ styles"
@@ -355,9 +344,6 @@ vi style of % jumping to matching brace."
                'python-mode
                'sh-mode))
   (add-hook mode 'rescan-start))
-
-;; Use bookmark+
-(require 'bookmark+ nil t)
 
 ;; Load sandbox if exist
 (require 'sandbox nil t)
