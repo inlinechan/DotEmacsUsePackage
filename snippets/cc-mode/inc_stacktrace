@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: inc_stacktrace
+# key: incst
+# binding: 
+# --
+#include "base/debug/stack_trace.h"

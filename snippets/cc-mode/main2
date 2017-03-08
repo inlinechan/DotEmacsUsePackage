@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: main2
+# key: main2
+# --
+int main(${1:int, char *[]})
+{
+    $0
+    return 0;
+}

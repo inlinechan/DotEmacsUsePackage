@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: loglinef
+# key: loglinef
+# binding: C-c r p
+# --
+fprintf(stderr, "#### `(which-function)`\n");

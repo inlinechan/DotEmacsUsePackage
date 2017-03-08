@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: classd
+# key: clsd
+# --
+class ${1:Name}
+{
+public:
+    ${1:$(yas/substr yas-text "[^: ]*")}() { std::cout << "${1:$(yas/substr yas-text "[^: ]*")}" << std::endl; }
+    ${2:virtual ~${1:$(yas/substr yas-text "[^: ]*")}() { std::cout << "~${1:$(yas/substr yas-text "[^: ]*")}" << std::endl; }}
+};
+$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: b2s
+# key: b2s
+# --
+${1:`(yank)`} ? "true" : "false"
