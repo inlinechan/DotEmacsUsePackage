@@ -165,6 +165,8 @@
          ("\e," . hc/find-rtag)
          ("\ep" . previous-line)
          ("\en" . next-line)
+         ("p" . previous-line)
+         ("n" . next-line)
          :map gtags-mode-map
          ("\e*" . gtags-pop-stack)
          ("\e." . hc/tag-from-here)
