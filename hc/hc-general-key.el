@@ -4,8 +4,6 @@
           (lambda ()
             (define-key c-mode-base-map (kbd "<f9>") 'compile)))
 
-(global-set-key (kbd "C-c r y") 'comment-region)
-(global-set-key (kbd "C-c r u") 'uncomment-region)
 (global-set-key (kbd "M-g") 'goto-line)
 
 (global-set-key (kbd "C-c m") 'manual-entry)    ;; manpage
@@ -24,13 +22,12 @@
 
 (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
 
-(define-prefix-command 'hc/key-map)
+(global-set-key (kbd "<f2> 0") 'shell)
+(global-set-key (kbd "<f2> 9") 'ansi-term)
 
-(define-key hc/key-map (kbd "<f2>") 'hc/key-map)
-
-(define-key hc/key-map (kbd "0") 'shell)
-(define-key hc/key-map (kbd "9") 'ansi-term)
-(global-set-key (kbd "<f2>") hc/key-map)
+(global-set-key (kbd "<f5> 0") (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
+(global-set-key (kbd "<f5> 9") (lambda () (interactive) (find-file "~/.emacs.d/hc/hc-general.el")))
+(global-set-key (kbd "<f5> 8") (lambda () (interactive) (find-file "~/Documents/org")))
 
 ;; Minimize current buffer's height
 (global-set-key [f7] (kbd "C-x + C-u - 1 6 C-x ^"))
