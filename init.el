@@ -15,7 +15,6 @@
 
 (require 'hc-general)
 (require 'hc-general-key)
-(require 'hc-ido)
 (require 'hc-korean)
 (require 'hc-ui)
 (require 'hc-shell)
@@ -213,6 +212,29 @@
             (jedi:ac-setup)
             (jedi:start-server)))
 
+(use-package helm-projectile
+  :ensure t
+  :config
+  (helm-projectile-on))
+
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-global-mode)
+  (setq projectile-completion-system 'helm
+        projectile-enable-caching t))
+
+(use-package flx-ido
+  :ensure t
+  :config
+  (ido-mode 1)
+  (ido-everywhere 1)
+  (flx-ido-mode 1)
+  ;; disable ido faces to see flx highlights.
+  ;; (setq ido-enable-flex-matching t)
+  ;; (setq ido-use-faces nil)
+  )
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -220,7 +242,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (tern-auto-complete yasnippet web-mode use-package tern markdown-mode magit json-mode jade google-c-style flycheck clang-format bookmark+))))
+    (flx-ido helm-projectile projectile helm-ls-git tern-auto-complete yasnippet web-mode use-package tern markdown-mode magit json-mode jade google-c-style flycheck clang-format bookmark+))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
