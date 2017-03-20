@@ -60,6 +60,7 @@
     (local-set-key (kbd "<f5>") 'js2-mode-toggle-hide-functions))
 
   (add-hook 'js2-mode-hook 'override-gtags-find-file-hook)
+  (setq js2-basic-offset 2)
   :ensure t)
 
 (use-package magit
