@@ -235,6 +235,16 @@
   ;; (setq ido-use-faces nil)
   )
 
+(use-package helm-gtags
+  :ensure t
+  :init
+  (setq helm-gtags-cache-select-result t
+        helm-gtags-prefix-key "C-c h"
+        helm-gtags-suggested-key-mapping t)
+  :config
+  (add-hook 'c-mode-hook 'helm-gtags-mode)
+  (add-hook 'c++-mode-hook 'helm-gtags-mode))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
