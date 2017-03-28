@@ -45,10 +45,14 @@
   :config
   (setq company-backends (delete 'company-semantic company-backends)))
 
+(use-package gnuplot
+  :ensure t)
+
 (use-package org
   :ensure t
   :config
-  (require 'hc-org))
+  (with-eval-after-load 'org
+    (require 'hc-org)))
 
 (use-package js2-mode
   :mode "\\.js\\'"
@@ -247,6 +251,9 @@
   :config
   (add-hook 'c-mode-hook 'helm-gtags-mode)
   (add-hook 'c++-mode-hook 'helm-gtags-mode))
+
+(use-package hc-local
+  :load-path "lisp/")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
