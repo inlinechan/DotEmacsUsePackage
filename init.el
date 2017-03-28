@@ -76,6 +76,7 @@
 (use-package json-mode
   :ensure t
   :config
+  (setq js-indent-level 2)
   (eval-after-load 'flycheck
     `(progn
        (require 'flycheck)
@@ -108,17 +109,19 @@
 
 (use-package web-mode
   :ensure t
-  :mode ("\\.jsx\\'" "\\.html$")
+  :mode ("\\.jsx\\'" "\\.html\\'" "\\.css\\'")
   :config
   (setq web-mode-markup-indent-offset 2
         web-mode-css-indent-offset 2
         web-mode-code-indent-offset 2
-        s-indent-level 2)
+        web-mode-enable-auto-quoting nil)
 
-  ;; Enable this if .js highlight like .jsx
-  ;; (setq web-mode-content-types-alist
-  ;;   '(("jsx" . "\\.js[x]?\\'")))
-  )
+
+  ;; To associate .js as web-mode, add this to lisp/hc-local.el
+  ;; (add-to-list 'auto-mode-alist '("/home/hyungchan/source/redux/.*\\.js[x]?\\'" . web-mode))
+
+  (setq web-mode-content-types-alist
+        '(("jsx" . "\\.js[x]?\\'"))))
 
 (use-package yasnippet
   :ensure t
@@ -252,7 +255,8 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flx-ido helm-projectile projectile helm-ls-git tern-auto-complete yasnippet web-mode use-package tern markdown-mode magit json-mode jade google-c-style flycheck clang-format bookmark+))))
+    (flx-ido helm-projectile projectile helm-ls-git tern-auto-complete yasnippet web-mode use-package tern markdown-mode magit json-mode jade google-c-style flycheck clang-format bookmark+)))
+ )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
