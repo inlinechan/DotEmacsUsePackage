@@ -209,9 +209,7 @@ vi style of % jumping to matching brace."
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; css-mode
-(autoload 'css-mode "css-mode-simple")
-(setq auto-mode-alist
-      (cons '("\\.css\\'" . css-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.css\\'" . css-mode))
 
 ;; makefile-mode
 (setq auto-mode-alist
