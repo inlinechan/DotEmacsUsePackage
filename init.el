@@ -308,3 +308,5 @@
 
 (use-package hc-local
   :load-path "lisp/")
+
+(load "~/.emacs.d/lisp/custom.el")
