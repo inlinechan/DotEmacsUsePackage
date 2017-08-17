@@ -23,7 +23,7 @@
 (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
 
 (global-set-key (kbd "<f2> 0") 'shell)
-(global-set-key (kbd "<f2> 9") 'ansi-term)
+(global-set-key (kbd "<f2> 9") 'visit-term-buffer) ; ansi-term
 
 (global-set-key (kbd "<f5> 0") (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 (global-set-key (kbd "<f5> 9") (lambda () (interactive) (find-file "~/.emacs.d/hc/hc-general.el")))

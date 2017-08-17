@@ -19,4 +19,15 @@
 ;; ;; Well the real default would be C-c C-j C-y C-c C-k.
 ;; (define-key term-raw-map  (kbd "C-y") 'term-paste)
 
+;; http://emacsredux.com/blog/2013/03/29/terminal-at-your-fingertips/
+(defun visit-term-buffer ()
+  "Create of visit a terminal buffer."
+  (interactive)
+  (if (not (get-buffer "*ansi-term*"))
+      (progn
+        (split-window-sensibly (selected-window))
+        (other-window 1)
+        (ansi-term (getenv "SHELL")))
+    (switch-to-buffer-other-window "*ansi-term*")))
+
 (provide 'hc-shell)
