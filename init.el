@@ -252,5 +252,59 @@
   (add-hook 'c-mode-hook 'helm-gtags-mode)
   (add-hook 'c++-mode-hook 'helm-gtags-mode))
 
+(use-package swift-mode
+  :ensure t)
+
+;; (use-package flycheck-swift
+;;   :ensure t)
+;; (eval-after-load 'flycheck '(flycheck-swift-setup))
+
+(use-package tide
+  :ensure t
+  :config
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1)
+    ;; company is an optional dependency. You have to
+    ;; install it separately via package-install
+    ;; `M-x package-install [ret] company`
+    (company-mode +1))
+
+  ;; aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t)
+
+  ;; formats the buffer before saving
+  (add-hook 'before-save-hook 'tide-format-before-save)
+
+  (add-hook 'typescript-mode-hook #'setup-tide-mode))
+
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+
+(use-package ng2-mode
+  :ensure t
+  :config
+  (setq typescript-indent-level 2)
+  (setq tide-format-options '(:indentSize 2)))
+
+(use-package go
+  :ensure t
+  :config
+  (add-hook 'go-mode-hook (lambda ()
+                            (set (make-local-variable 'company-backends) '(company-go))
+                            (add-hook 'before-save-hook 'gofmt-before-save)
+                            (local-set-key (kbd "M-.") 'godef-jump)
+                            (local-set-key (kbd "M-*") 'pop-tag-mark)
+                            (company-mode))))
+
+(use-package company-go
+  :ensure t)
+
 (use-package hc-local
   :load-path "lisp/")
