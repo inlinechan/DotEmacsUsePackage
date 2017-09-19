@@ -5,7 +5,7 @@
   "Use jsbeautify to beautify some js"
   :group 'editing)
 
-(defcustom js-beautify-args "--jslint-happy --brace-style=end-expand --keep-array-indentation"
+(defcustom js-beautify-args "--jslint-happy --brace-style=end-expand --keep-array-indentation --stdin"
   "Arguments to pass to jsbeautify script"
   :type '(string)
   :group 'js-beautify)
