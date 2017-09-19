@@ -306,6 +306,16 @@
 (use-package company-go
   :ensure t)
 
+(use-package helm-ls-git
+  :ensure t
+  :config
+  (global-set-key (kbd "<f2> l") 'helm-browse-project))
+
+(use-package helm-ag
+  :ensure t
+  :config
+  (global-set-key (kbd "<f2> g") 'helm-ag-project-root))
+
 (use-package hc-local
   :load-path "lisp/")
 
