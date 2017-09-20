@@ -16,7 +16,7 @@
   "Return wtop from PATH.
 
 When optional STRICT is non-nil then do not try to find wtop directory from its SIBLING."
-  (let* ((parent-dir (file-name-directory (directory-file-name (magit-toplevel path))))
+  (let* ((parent-dir (file-name-directory (directory-file-name path)))
          (top-pattern "^\\(.*build-[^/]*\\).*$")
          (candidates (directory-files parent-dir 'full top-pattern)))
     (if (string-match top-pattern path)
@@ -188,6 +188,7 @@ When optional STRICT is non-nil then do not try to find wtop directory from its 
          ("\\.bb$"       . python-mode)
          (".*meta.*\\.inc" . python-mode)
          ("\\.bbappend$" . python-mode)
+         ("\\.bbclass$" . python-mode)
          )
        auto-mode-alist))
 
