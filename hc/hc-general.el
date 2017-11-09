@@ -183,6 +183,7 @@ vi style of % jumping to matching brace."
           (string-match "JavaScriptCore" buffer-file-name)
           (string-match "WebKit" buffer-file-name)
           (string-match "WebKit2" buffer-file-name)
+          (string-match "wam" buffer-file-name)
           (string-match "blink" buffer-file-name))
       (progn
         ;; (message "%s" "hc/maybe-webkit-style")
@@ -468,5 +469,30 @@ vi style of % jumping to matching brace."
 
 (add-hook 'js2-mode-hook #'lambda()
           (setq js2-basic-offset 2))
+
+
+(require 'vc-git)
+(defun grep-find-on-git-root (command-args)
+  "Run \\[grep-find] on git root, with user-specified args COMMAND-ARGS."
+  (interactive
+   (progn
+     (grep-compute-defaults)
+     (let* ((git-root (vc-git-root (or buffer-file-name default-directory)))
+            (src "find .")
+            (dst (concat "find " git-root))
+            (grep-find-command-new (replace-regexp-in-string src dst (car grep-find-command))))
+       (setq grep-find-command
+             (cons grep-find-command-new
+                   (+ (cdr grep-find-command) (- (length dst) (length src))))))
+     (if grep-find-command
+         (list (read-shell-command "Run find (like this): "
+                                   grep-find-command 'grep-find-history))
+       ;; No default was set
+       (read-string
+        "compile.el: No `grep-find-command' command available. Press RET.")
+       (list nil))))
+  (when command-args
+    (let ((null-device nil))		; see grep
+      (grep command-args))))
 
 (provide 'hc-general)
