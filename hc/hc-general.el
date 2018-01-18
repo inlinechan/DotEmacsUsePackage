@@ -477,13 +477,6 @@ vi style of % jumping to matching brace."
   (interactive
    (progn
      (grep-compute-defaults)
-     (let* ((git-root (vc-git-root (or buffer-file-name default-directory)))
-            (src "find .")
-            (dst (concat "find " git-root))
-            (grep-find-command-new (replace-regexp-in-string src dst (car grep-find-command))))
-       (setq grep-find-command
-             (cons grep-find-command-new
-                   (+ (cdr grep-find-command) (- (length dst) (length src))))))
      (if grep-find-command
          (list (read-shell-command "Run find (like this): "
                                    grep-find-command 'grep-find-history))
@@ -493,6 +486,8 @@ vi style of % jumping to matching brace."
        (list nil))))
   (when command-args
     (let ((null-device nil))		; see grep
-      (grep command-args))))
+      (let* ((git-root (vc-git-root (or buffer-file-name default-directory)))
+             (default-directory git-root))
+        (grep command-args)))))
 
 (provide 'hc-general)
