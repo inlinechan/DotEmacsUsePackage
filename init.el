@@ -207,18 +207,6 @@
                     'dired-mode-hook))
   (add-hook mode 'enable-gtags-mode))
 
-(use-package jedi
-  :ensure t
-  :init
-  (setq jedi:key-goto-definition (kbd "C-c ."))
-  :pin melpa)
-
-(add-hook 'python-mode-hook
-          (lambda ()
-            (jedi:setup)
-            (jedi:ac-setup)
-            (jedi:start-server)))
-
 (use-package helm-projectile
   :ensure t
   :config
@@ -315,6 +303,24 @@
   :ensure t
   :config
   (global-set-key (kbd "<f2> g") 'helm-ag-project-root))
+
+(use-package virtualenvwrapper
+  :ensure t
+  :config
+  (venv-initialize-interactive-shells)
+  (add-hook 'venv-postmkvirtualenv-hook
+            (lambda () (shell-command "pip install nose flake8 jedi"))))
+
+(use-package company-jedi
+  :ensure t
+  ;; :init
+  ;; (setq jedi:key-goto-definition (kbd "C-c ."))
+  :config
+  (defun my/python-mode-hook ()
+    (jedi:setup)
+    (add-to-list 'company-backends 'company-jedi))
+
+  (add-hook 'python-mode-hook 'my/python-mode-hook))
 
 (use-package hc-local
   :load-path "lisp/")
