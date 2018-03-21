@@ -46,7 +46,12 @@
   (setq company-backends (delete 'company-semantic company-backends)))
 
 (use-package gnuplot
-  :ensure t)
+  :ensure t
+  :config
+  (setq auto-mode-alist
+        (append
+         '(("\\.dem$" . gnuplot-mode))
+         auto-mode-alist)))
 
 (use-package org
   :ensure t
@@ -322,7 +327,19 @@
 
   (add-hook 'python-mode-hook 'my/python-mode-hook))
 
+(use-package qml-mode
+  :config
+  (add-hook 'qml-mode-hook (lambda ()
+                             (setq js-indent-level 4))))
+
+(use-package graphviz-dot-mode
+  :ensure t)
+
+(use-package cmake-mode
+  :ensure t)
+
 (use-package hc-local
   :load-path "lisp/")
+
 
 (load "~/.emacs.d/lisp/custom.el")
