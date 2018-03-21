@@ -490,4 +490,15 @@ vi style of % jumping to matching brace."
              (default-directory git-root))
         (grep command-args)))))
 
+(defun dired-do-copy-dwim-target (&optional arg)
+  "Do dired-do-copy while `dired-dwim-target' is not nil (with optional ARG)."
+  (interactive)
+  (if current-prefix-arg
+      (let ((dired-dwim-target t))
+        (dired-do-copy arg))
+    (dired-do-copy arg)))
+
+(require 'dired)
+(define-key dired-mode-map (kbd "C") 'dired-do-copy-dwim-target)
+
 (provide 'hc-general)
