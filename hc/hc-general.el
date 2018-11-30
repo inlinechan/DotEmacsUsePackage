@@ -511,4 +511,6 @@ vi style of % jumping to matching brace."
 (require 'dired)
 (define-key dired-mode-map (kbd "C") 'dired-do-copy-dwim-target)
 
+(setq comment-style 'extra-line)
+
 (provide 'hc-general)
