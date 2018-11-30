@@ -174,6 +174,11 @@ vi style of % jumping to matching brace."
                  (c-offsets-alist . ((arglist-intro . ++)
                                      (innamespace . 0)
                                      (member-init-intro . ++)))))
+  (c-add-style "qt-gnu"
+               '("gnu"
+                 (c-access-key .
+                               "\\<\\(signals\\|public\\|protected\\|private\\|public slots\\|protected slots\\|private slots\\):")
+                 (c-basic-offset . 4)))
 )
 
 (defun hc/decide-c-mode-style ()
@@ -199,6 +204,11 @@ vi style of % jumping to matching brace."
      ((or (string-match "llvm" buffer-file-name)
           (string-match "clang" buffer-file-name))
       (c-set-style "llvm.org"))
+     ((or (string-match "luna-surfacemanager" buffer-file-name)
+          (string-match "[Qq][Tt]" buffer-file-name)
+          (string-match "wayland" buffer-file-name)
+          (string-match "qml" buffer-file-name))
+      (c-set-style "qt-gnu"))
      (t
       (c-set-style "google")))))
 
