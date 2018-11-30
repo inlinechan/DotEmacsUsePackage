@@ -419,6 +419,7 @@ vi style of % jumping to matching brace."
       (find-file next))))
 
 (defun hc-switch-header-impl()
+  (local-set-key (kbd "M-p") 'hc-switch-cc-to-h)
   (local-set-key (kbd "C-M-p") 'hc-switch-cc-to-h))
 
 (dolist (mode (list
