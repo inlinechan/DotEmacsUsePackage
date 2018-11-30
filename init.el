@@ -170,6 +170,8 @@
   :commands (gtags-mode gtags-find-file)
   :bind (("C-c C-f" . gtags-find-file)
          ("C-c g p" . gtags-find-pattern)
+         ("C-c t" . hc/mktag)
+         ("C-c u" . hc/gtags-update)
          :map gtags-select-mode-map
          ("q" . gtags-pop-stack)
          ("\eo" . gtags-select-tag-other-window-focus)
