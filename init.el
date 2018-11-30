@@ -202,8 +202,31 @@
     (interactive)
     (if (gtags-get-rootpath)
         (gtags-find-rtag)
-      (message "No gtags index found"))))
+      (message "No gtags index found")))
 
+  (defun hc/mktag (dir)
+    (interactive "Dmktag (directory): ")
+    (let ((mktag-script "mktag")
+          (buffer-name "*mktag*"))
+      (and (executable-find mktag-script)
+           (or (cd dir) (error "Fail to change directory to %s" dir))
+           (start-process-shell-command mktag-script buffer-name mktag-script)
+           (switch-to-buffer buffer-name))))
+
+  (defun hc/gtags-update (dir)
+    (interactive "Dglobal -u (directory): ")
+    (let ((global-script "global")
+          (buffer-name "*mktag*"))
+      (and (executable-find global-script)
+           (or (cd dir) (error "Fail to change directory to %s" dir))
+           (let ((result
+                  (benchmark-run 1
+                    (call-process global-script nil buffer-name t "-u"))))
+             (message "Took %3.0f ms in running `%s -u in %s'"
+                      (* 1000.0 (car result)) global-script dir))))))
+
+;; global scope begin
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun enable-gtags-mode ()
   (gtags-mode 1))
 
