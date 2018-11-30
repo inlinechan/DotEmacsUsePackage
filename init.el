@@ -260,18 +260,18 @@
   ;; (setq ido-use-faces nil)
   )
 
-(use-package helm-gtags
-  :ensure t
-  :init
-  (setq helm-gtags-cache-select-result t
-        helm-gtags-prefix-key "C-c h"
-        helm-gtags-suggested-key-mapping t)
+(use-package helm-ls-git
+  :commands helm-browse-project
   :config
-  (add-hook 'c-mode-hook 'helm-gtags-mode)
-  (add-hook 'c++-mode-hook 'helm-gtags-mode))
+  (global-set-key (kbd "<f2> l") 'helm-browse-project))
 
-(use-package swift-mode
-  :ensure t)
+(use-package helm-ag
+  :commands helm-ag-project-root
+  :config
+  (global-set-key (kbd "<f2> g") 'helm-ag-project-root))
+
+(use-package swift-mode)
+  ;; :ensure t)
 
 ;; (use-package flycheck-swift
 ;;   :ensure t)
