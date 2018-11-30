@@ -27,6 +27,8 @@
 (global-set-key (kbd "<f2> h") 'grep-find-on-git-root)
 (global-set-key (kbd "<f2> -") 'tramp-cleanup-this-connection)
 
+(global-set-key (kbd "<f2> =") 'hc/kill-some-magit-buffer)
+
 (global-set-key (kbd "<f5> 0") (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 (global-set-key (kbd "<f5> 9") (lambda () (interactive) (find-file "~/.emacs.d/hc/hc-general.el")))
 (global-set-key (kbd "<f5> 8") (lambda () (interactive) (find-file "~/Documents/org")))

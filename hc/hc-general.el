@@ -513,4 +513,20 @@ vi style of % jumping to matching brace."
 
 (setq comment-style 'extra-line)
 
+(defun hc/kill-some-magit-buffer()
+  "Kill troublesome buffers."
+  (interactive)
+  (mapc (lambda (buffer)
+          (let ((buf-name (buffer-name (get-buffer buffer)))
+                (target-list '("magit: build-signage"
+                               "magit-log: build-signage"
+                               "magit-revision: build-signage"
+                               "build-signage")))
+            (dolist (target target-list)
+              (when (string= target (buffer-name (get-buffer buffer)))
+                ;; (message (buffer-name (get-buffer buffer)))
+                (kill-buffer (get-buffer buffer))
+                ))))
+        (buffer-list)))
+
 (provide 'hc-general)
