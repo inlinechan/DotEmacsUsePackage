@@ -73,7 +73,8 @@
 
 (use-package magit
   :ensure t
-  :bind ("C-c s" . magit-status)
+  :bind (("C-c s" . magit-status)
+         ("C-x g" . magit-status))
   :config
   ;; https://github.com/magit/magit/issues/1743
   ;; use 2way ediff like we used to do in version 1.x
