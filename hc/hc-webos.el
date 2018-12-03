@@ -6,12 +6,6 @@
 
 (require 'find-dired)
 
-(defvar webos-find-recipes-args nil
-  "Last arguments given to `find' by \\[webos-find-recipes].")
-
-(defvar webos-find-recipes-cache nil
-  "Cache the result of \\[webos-find-recipe-candidates].")
-
 (defun webos-top (path &optional strict)
   "Return wtop from PATH.
 
@@ -28,32 +22,25 @@ When optional STRICT is non-nil then do not try to find wtop directory from its 
 (defun webos-find-recipe-candidates ()
   "Find bitbake recipe candidates in the subdirectories recursively."
   (let ((wtop (webos-top default-directory))
-        (buffer (get-buffer-create "*webos-find*"))
-        (files nil)
-        (find-command (concat "find meta\* -type f -regex "
-                              "\".*\\(bb\\|bbclass\\|bbappend\\|inc\\)$\" ")))
-    (if wtop
-        (if webos-find-recipes-cache
-            webos-find-recipes-cache
-          (progn
-            (with-current-buffer buffer
-              (erase-buffer))
-
-            (cd wtop)
-            (if (= 0 (call-process-shell-command
-                      find-command
-                      nil buffer))
-                (progn
-                  (with-current-buffer buffer
-                    (setq files (split-string (buffer-string))))
-                  (kill-buffer buffer)
-                  (setq webos-find-recipes-cache
-                        (mapcar #'(lambda (path)
-                                    (let ((parts (split-string path "/")))
-                                      (last parts)))
-                                files)))
-              nil)))
-      nil)))
+        (buffer (get-buffer-create "*webos-recipe*"))
+        ;; (find-command "find -E meta* -type f -regex \".*(bb|bbappend|bbclass)$\" ") ;; mac
+        (find-command (concat "find meta* -type f \\( "
+                              "-name \\*.bb -o -name \\*.bbclass "
+                              "-o -name \\*.bbappend -o -name \\*.inc"
+                              " \\)"))
+        (recipes nil))
+    (when wtop
+      (progn
+        (with-current-buffer buffer
+          (erase-buffer)
+          (cd wtop)
+          (when (= 0 (call-process-shell-command find-command nil buffer))
+            (setq recipes (mapcar #'(lambda (path)
+                                      (let ((parts (split-string path "/")))
+                                        (last parts)))
+                                  (split-string (buffer-string))))))
+        (kill-buffer buffer)))
+    recipes))
 
 (defun webos-find-recipes (pattern)
   "Find bitbake recipes with matching PATTERN."
@@ -135,20 +122,14 @@ When optional STRICT is non-nil then do not try to find wtop directory from its 
         (buffer (get-buffer-create "*webos-cd*"))
         (dirs nil)
         (command "ls BUILD\*/work/\* | grep -v \":$\" | sed \"/^\s\*$/d\""))
-    (if wtop
-        (progn
-          (with-current-buffer buffer
-            (erase-buffer))
-
-          (cd wtop)
-          (if (= 0 (call-process-shell-command command nil buffer))
-              (progn
-                (with-current-buffer buffer
-                  (setq dirs (split-string (buffer-string))))
-                (kill-buffer buffer)
-                dirs)
-              nil))
-      (message "Not in webos directory"))))
+    (when wtop
+      (with-current-buffer buffer
+        (erase-buffer)
+        (cd wtop)
+        (when (= 0 (call-process-shell-command command nil buffer))
+          (setq dirs (split-string (buffer-string)))))
+        (kill-buffer buffer)
+        dirs)))
 
 (defun webos-find-module-directory (target)
   "Find module directory TARGET from webos-top."
