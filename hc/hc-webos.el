@@ -45,7 +45,7 @@ When optional STRICT is non-nil then do not try to find wtop directory from its 
 (defun webos-find-recipes (pattern)
   "Find bitbake recipes with matching PATTERN."
   (interactive
-   (list (completing-read "recipe: " (webos-find-recipe-candidates))))
+   (list (helm-comp-read "recipe: " (webos-find-recipe-candidates))))
 
   (let* ((buffer-name (concat "*Find*" " - " pattern))
          (wtop (webos-top default-directory))
@@ -153,25 +153,12 @@ When optional STRICT is non-nil then do not try to find wtop directory from its 
 (defun webos-cd (module)
   "`find-file' MODULE directory in webos."
   (interactive
-   (list (completing-read "module: " (webos-cd-candidates))))
+   (list (helm-comp-read "module: " (webos-cd-candidates))))
 
   (let ((wtop (webos-top default-directory)))
     (if wtop
         (find-file (webos-find-module-directory module))
       (message "Not in webos directory"))))
-
-(global-set-key (kbd "C-x C-g") 'webos-cd)
-
-(setq auto-mode-alist
-      (append
-       '(
-         ;; bitbake
-         ("\\.bb$"       . python-mode)
-         (".*meta.*\\.inc" . python-mode)
-         ("\\.bbappend$" . python-mode)
-         ("\\.bbclass$" . python-mode)
-         )
-       auto-mode-alist))
 
 (provide 'hc-webos)
 
