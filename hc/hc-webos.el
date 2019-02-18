@@ -6,29 +6,40 @@
 
 (require 'find-dired)
 
-(defun webos-top (path &optional strict)
-  "Return wtop from PATH.
+(defvar webos-top-patterns
+  '("^\\(.*build-[^/]*\\).*$" "^\\(.*AGL\\).*$")
+  "The pattern to search top dir.")
 
-When optional STRICT is non-nil then do not try to find wtop directory from its SIBLING."
-  (let* ((parent-dir (file-name-directory (directory-file-name path)))
-         (top-pattern "^\\(.*build-[^/]*\\).*$")
-         (candidates (directory-files parent-dir 'full top-pattern)))
+(require 'cl-extra)
+
+(defun webos-top (path)
+  "Return wtop from PATH."
+  (cl-some (apply-partially 'webos--top-internal path) webos-top-patterns))
+
+(defun webos--top-internal (path top-pattern)
+  "Return wtop from PATH with TOP-PATTERN."
+  (let* ((case-fold-search nil)
+         (parent-dir (file-name-directory (directory-file-name path))))
     (if (string-match top-pattern path)
         (match-string 1 path)
-      (if (and (not strict) (listp candidates))
-          (car candidates)
-        nil))))
+      nil)))
+
+(defun webos-find-meta-directories (topdir)
+  "Find meta layer diretories from TOPDIR."
+  (when topdir
+    (directory-files topdir 'full "^\\(.*\\(meta\\|oe-core\\)\\).*$")))
 
 (defun webos-find-recipe-candidates ()
   "Find bitbake recipe candidates in the subdirectories recursively."
-  (let ((wtop (webos-top default-directory))
-        (buffer (get-buffer-create "*webos-recipe*"))
-        ;; (find-command "find -E meta* -type f -regex \".*(bb|bbappend|bbclass)$\" ") ;; mac
-        (find-command (concat "find meta* -type f \\( "
-                              "-name \\*.bb -o -name \\*.bbclass "
-                              "-o -name \\*.bbappend -o -name \\*.inc"
-                              " \\)"))
-        (recipes nil))
+  (let* ((wtop (webos-top default-directory))
+         (recipe-directories (mapconcat #'identity (webos-find-meta-directories wtop) " "))
+         (buffer (get-buffer-create "*webos-recipe*"))
+         ;; (find-command "find -E meta* -type f -regex \".*(bb|bbappend|bbclass)$\" ") ;; mac
+         (find-command (concat "find " recipe-directories " -type f \\( "
+                               "-name \\*.bb -o -name \\*.bbclass "
+                               "-o -name \\*.bbappend -o -name \\*.inc"
+                               " \\)"))
+         (recipes nil))
     (when wtop
       (progn
         (with-current-buffer buffer
@@ -116,30 +127,37 @@ When optional STRICT is non-nil then do not try to find wtop directory from its 
           (setq mode-line-process '(":%s")))
       (message "Not in webos directory"))))
 
+(defun webos-find-build-directories (topdir)
+  "Find meta layer diretories from TOPDIR."
+  (when topdir
+    (car (directory-files topdir 'nil "^.*\\(\\(build\\|BUILD\\)\\)$"))))
+
 (defun webos-cd-candidates ()
   "`find-file' to DIR."
-  (let ((wtop (webos-top default-directory))
-        (buffer (get-buffer-create "*webos-cd*"))
-        (dirs nil)
-        (command "ls BUILD\*/work/\* | grep -v \":$\" | sed \"/^\s\*$/d\""))
+  (let* ((wtop (webos-top default-directory))
+         (buffer (get-buffer-create "*webos-cd*"))
+         (dirs nil)
+         (webos-builddir (webos-find-build-directories wtop))
+         (command (concat "ls " webos-builddir "\*/work/\* | grep -v \":$\" | sed \"/^\s\*$/d\"")))
     (when wtop
       (with-current-buffer buffer
         (erase-buffer)
         (cd wtop)
         (when (= 0 (call-process-shell-command command nil buffer))
           (setq dirs (split-string (buffer-string)))))
-        (kill-buffer buffer)
-        dirs)))
+      (kill-buffer buffer)
+      dirs)))
 
 (defun webos-find-module-directory (target)
   "Find module directory TARGET from webos-top."
-  (let ((wtop (webos-top default-directory))
-        (found nil))
+  (let* ((wtop (webos-top default-directory))
+         (webos-builddir (webos-find-build-directories wtop))
+         (found nil))
     (dolist (build (directory-files wtop t))
       ;; (message "build: %s" build))))
       (setq case-fold-search nil)
       (when (and (file-directory-p build)
-                 (string-match "^BUILD" (car (last (split-string build "/")))))
+                 (string-match (concat "^" webos-builddir) (car (last (split-string build "/")))))
         (let ((work (concat build "/work")))
           ;; (message "work: %s" work))))))
           (dolist (arch (directory-files work t))
