@@ -237,7 +237,7 @@ vi style of % jumping to matching brace."
          ;; gyp
          ("\\.gypi?$"    . python-mode)
          ;; bitbake
-         ("\\.bb$"       . python-mode)
+         ("\\.\\(bb\\|bbappend\\|bbclass\\|inc\\)$"       . python-mode)
          )
        auto-mode-alist))
 
