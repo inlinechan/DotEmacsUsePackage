@@ -238,18 +238,6 @@
                     'dired-mode-hook))
   (add-hook mode 'enable-gtags-mode))
 
-(use-package helm-projectile
-  :ensure t
-  :config
-  (helm-projectile-on))
-
-(use-package projectile
-  :ensure t
-  :config
-  (projectile-global-mode)
-  (setq projectile-completion-system 'helm
-        projectile-enable-caching t))
-
 (use-package flx-ido
   :ensure t
   :config
