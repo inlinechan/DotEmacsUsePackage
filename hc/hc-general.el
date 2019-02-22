@@ -210,7 +210,7 @@ vi style of % jumping to matching brace."
           (string-match "qml" buffer-file-name))
       (c-set-style "qt-gnu"))
      (t
-      (c-set-style "google")))))
+      (c-set-style "hc")))))
 
 (add-hook 'c-mode-common-hook 'hc/add-styles)
 (add-hook 'c-mode-common-hook 'hc/decide-c-mode-style t)
