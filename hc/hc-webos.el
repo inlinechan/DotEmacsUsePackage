@@ -7,7 +7,7 @@
 (require 'find-dired)
 
 (defvar webos-top-patterns
-  '("^\\(.*build-[^/]*\\).*$" "^\\(.*AGL\\).*$")
+  '("^\\(.*/build-[^/]*\\).*$" "^\\(.*/AGL\\).*$" "^/\\(.*/poky\\).*$")
   "The pattern to search top dir.")
 
 (require 'cl-extra)
@@ -164,7 +164,7 @@
             (when (directory-files arch t)
               (dolist (module (directory-files arch t))
                 (when (and (file-directory-p module)
-                           (string-match (concat ".*" target "$") module))
+                           (string-equal (car (last (split-string module "/"))) target))
                   (setq found module))))))))
     found))
 
