@@ -40,7 +40,7 @@
          (ruby . t)
          (gnuplot . t)
          (clojure . t)
-         (sh . t)
+         ;; (sh . t)
          (ledger . t)
          (org . t)
          (plantuml . t)

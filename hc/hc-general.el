@@ -287,15 +287,15 @@ vi style of % jumping to matching brace."
       (list (format "%s %%S: %%j " (system-name))
         '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
-(dolist (mode (list
-               'c++-mode
-               'c-mode
-               'java-mode
-               'js2-mode
-               'lisp-mode
-               ;; 'python-mode
-               'sh-mode))
-  (add-to-list 'which-func-modes mode))
+;; (dolist (mode (list
+;;                'c++-mode
+;;                'c-mode
+;;                'java-mode
+;;                'js2-mode
+;;                'lisp-mode
+;;                ;; 'python-mode
+;;                'sh-mode))
+;;   (add-to-list 'which-func-modes mode))
 
 (dolist (mode (list
                ;; 'c++-mode-hook      ;; wrong detection with starting || statement
