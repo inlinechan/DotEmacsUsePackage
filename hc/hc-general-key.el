@@ -32,9 +32,9 @@
 (global-set-key (kbd "<f2> ;") 'webos-find-recipes)
 (global-set-key (kbd "<f2> '") 'webos-cd)
 
-(global-set-key (kbd "<f5> 0") (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
-(global-set-key (kbd "<f5> 9") (lambda () (interactive) (find-file "~/.emacs.d/hc/hc-general.el")))
-(global-set-key (kbd "<f5> 8") (lambda () (interactive) (find-file "~/Documents/org")))
+(set-register ?0 '(file . "~/.emacs.d/init.el"))
+(set-register ?9 '(file . "~/.emacs.d/hc/hc-general.el"))
+(set-register ?- '(file . "/ssh:10.177.243.56:Documents/org/webos.org"))
 
 ;; Minimize current buffer's height
 (global-set-key [f7] (kbd "C-x + C-u - 1 6 C-x ^"))
