@@ -366,7 +366,7 @@ vi style of % jumping to matching brace."
   (string-match ext "^\\(cc\\|cpp\\|c\\)$"))
 
 (defun header-p (base other pp ext)
-  (string-match ext "^h$"))
+  (string-match ext "^\\(h\\|hpp)$"))
 
 (defun has-no-p-p (base other pp ext)
   (string-equal pp ""))
@@ -389,7 +389,7 @@ vi style of % jumping to matching brace."
 (defun hc-get-next-match (current &optional table)
   (when (null table)
     (setq table
-          '(((impl-p) (".h" "_p.h" "_p_p.h"))
+          '(((impl-p) (".h" ".hpp" "_p.h" "_p_p.h"))
             ((header-p has-no-p-p) ("_p.h" "_p_p.h" ".cpp" ".cc" ".c"))
             ((header-p has-single-p-p) ("_p_p.h" ".cpp" ".cc" ".c"))
             ((header-p has-double-p-p) (".cpp" ".cc" ".c")))))
