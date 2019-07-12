@@ -355,6 +355,9 @@
 (use-package qmake-mode
   :load-path "qmake-mode/")
 
+(use-package hc-keys
+  :load-path "lisp/")
+
 (use-package hc-local
   :load-path "lisp/")
 
