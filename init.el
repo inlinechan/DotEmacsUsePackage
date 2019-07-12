@@ -14,7 +14,7 @@
 (add-to-list 'load-path "~/.emacs.d/hc")
 
 (require 'hc-general)
-(require 'hc-general-key)
+;; (require 'hc-general-key)
 (require 'hc-korean)
 (require 'hc-ui)
 (require 'hc-shell)
