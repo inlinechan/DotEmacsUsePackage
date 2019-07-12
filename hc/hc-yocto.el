@@ -178,6 +178,6 @@
         (find-file (webos-find-module-directory module))
       (message "Not in webos directory"))))
 
-(provide 'hc-webos)
+(provide 'hc-yocto)
 
 ;;; hc-webos ends here

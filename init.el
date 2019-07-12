@@ -19,7 +19,7 @@
 (require 'hc-ui)
 (require 'hc-shell)
 (require 'js-beautify)
-(require 'hc-webos)
+;; (require 'hc-webos)
 
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -359,6 +359,9 @@
 
 (use-package hc-keys
   :diminish hc-keys-minor-mode
+  :load-path "lisp/")
+
+(use-package hc-yocto
   :load-path "lisp/")
 
 (use-package hc-local
