@@ -1,3 +1,8 @@
+;;; hc-general.el --- basic settings
+
+;;; Commentary:
+
+;;; Code:
 
 (setq-default transient-mark-mode t
               make-backup-files nil
@@ -21,45 +26,50 @@
               default-tab-width 4
               tab-width 4)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; parenthesis matching
 ;; http://www.emacswiki.org/cgi-bin/wiki/parenthesismatching
 (defun goto-match-paren (arg)
-  "go to the matching parenthesis if on parenthesis, otherwise insert %.
-vi style of % jumping to matching brace."
+  "Go to the matching parenthesis if on parenthesis, otherwise insert %.
+vi style of % jumping to matching brace.
+ARG."
   (interactive "p")
   (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
         ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
         (t (self-insert-command (or arg 1)))))
 
-;; purpose: when you visit a file, point goes to the last place where
-;; it was when you previously visited the same file.
-;;
-;; http://www.emacswiki.org/cgi-bin/wiki/saveplace
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; saveplace
+;; When you visit a file, point goes to the last place where it was when you
+;; previously visited the same file.
 (require 'saveplace)
-(setq-default save-place t)
+(save-place-mode t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ediff
 ;; http://www.emacswiki.org/emacs/EdiffMode
-(setq ediff-split-window-function (lambda (&optional arg)
-                                    (if (> (frame-width) 150)
-                                        (split-window-horizontally arg)
-                                      (split-window-vertically arg))))
+(setq-default ediff-split-window-function (lambda (&optional arg)
+                                            (if (> (frame-width) 150)
+                                                (split-window-horizontally arg)
+                                              (split-window-vertically arg))))
 ;; ediff marked file
 (defun dired-ediff-marked-files ()
   "Run ediff on marked ediff files."
   (interactive)
-  (set 'marked-files (dired-get-marked-files))
-  (when (= (safe-length marked-files) 2)
-    (ediff-files (nth 0 marked-files) (nth 1 marked-files)))
-  
-  (when (= (safe-length marked-files) 3)
-    (ediff3 (buffer-file-name (nth 0 marked-files))
-            (buffer-file-name (nth 1 marked-files)) 
-            (buffer-file-name (nth 2 marked-files)))))
+  (let (marked-files (dired-get-marked-files))
+  ;; (set 'marked-files (dired-get-marked-files))
+    (when (= (safe-length marked-files) 2)
+      (ediff-files (nth 0 marked-files) (nth 1 marked-files)))
+
+    (when (= (safe-length marked-files) 3)
+      (ediff3 (buffer-file-name (nth 0 marked-files))
+              (buffer-file-name (nth 1 marked-files))
+              (buffer-file-name (nth 2 marked-files))))))
 
 ;; getting git root dir
 ;; http://blog.uberweiss.net/2009/11/scoping-emacs-to-a-git-root-directory.html
 (defun my-git-root ()
+  "Find .git directory from current dir."
   (if buffer-file-name
       (let* ((current-directory (file-name-directory buffer-file-name))
              (git-directory (concat current-directory ".git")))
@@ -73,21 +83,21 @@ vi style of % jumping to matching brace."
 ;; Go to the line of the file easily especially in gdb call stack.
 ;; /etc/passwd:10
 (defun find-file-at-point-with-line()
-  "if file has an attached line num goto that line, ie boom.rb:12"
+  "If file has an attached line num goto that line, ie boom.rb:12."
   (interactive)
-  (setq line-num 0)
-  (save-excursion
-    (search-forward-regexp "[^ ]:" (point-max) t)
-    (if (looking-at "[0-9]+")
-        (setq line-num (string-to-number (buffer-substring (match-beginning 0) (match-end 0))))))
-  (find-file-at-point)
-  (if (not (equal line-num 0))
-      (goto-line line-num)))
+  (let ((line-num 0))
+    (save-excursion
+      (search-forward-regexp "[^ ]:" (point-max) t)
+      (if (looking-at "[0-9]+")
+          (setq line-num (string-to-number (buffer-substring (match-beginning 0) (match-end 0))))))
+    (find-file-at-point)
+    (if (not (equal line-num 0))
+        (forward-line line-num))))
 
 (global-set-key (kbd "C-<return>") 'find-file-at-point-with-line)
 
 ;; Use the clipboard, pretty please, so that copy/paste "works"
-(setq x-select-enable-clipboard t)
+(setq-default x-select-enable-clipboard t)
 
 ;; C-x C-j opens dired with the cursor right on the file you're editing
 (require 'dired-x)
@@ -118,12 +128,14 @@ vi style of % jumping to matching brace."
         (isearch-forward regexp-p no-recursive-edit)))))
 
 (defun other-window-prev (&optional step)
-  "other-window to opposite direction"
+  "Go to other window to opposite direction.
+STEP ignored for now."
   (interactive "P")
   (setq step -1)
   (other-window step))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; recentf
 (require 'recentf)
 
@@ -134,7 +146,7 @@ vi style of % jumping to matching brace."
 (setq recentf-max-saved-items 50)
 
 (defun ido-recentf-open ()
-  "Use `ido-completing-read' to \\[find-file] a recent file"
+  "Use `ido-completing-read' to \\[find-file] a recent file."
   (interactive)
   (if (find-file (ido-completing-read "Find recent file: " recentf-list))
       (message "Opening file...")
@@ -145,7 +157,7 @@ vi style of % jumping to matching brace."
 
 
 (defun hc/add-styles ()
-  "Add c/c++ styles"
+  "Add c/c++ styles."
   (require 'google-c-style)
 
   (c-add-style "hc" '("google"
@@ -182,6 +194,7 @@ vi style of % jumping to matching brace."
 )
 
 (defun hc/decide-c-mode-style ()
+  "Decide which style to be used."
   (when (buffer-file-name)
     (cond
      ((or (string-match "WebCore" buffer-file-name)
@@ -243,7 +256,7 @@ vi style of % jumping to matching brace."
 
 ;; http://stackoverflow.com/a/3346308
 (defun c-c++-header ()
-  "sets either c-mode or c++-mode, whichever is appropriate for header"
+  "Set either `c-mode' or `c++-mode', whichever is appropriate for header."
   (interactive)
   (let ((c-file (concat (substring (buffer-file-name) 0 -1) "c")))
     (if (file-exists-p c-file)
@@ -264,7 +277,7 @@ vi style of % jumping to matching brace."
 ;; http://www.emacswiki.org/emacs/WhichFuncMode#WhichFunctionMode
 (which-function-mode)
 (defun which-func-update ()
-  ;; "Update the Which-Function mode display for all windows."
+  "Update the Which-Function mode display for all windows."
   (walk-windows 'which-func-update-1 nil 'visible))
 
 (setq mode-line-misc-info
@@ -300,15 +313,16 @@ vi style of % jumping to matching brace."
 (dolist (mode (list
                ;; 'c++-mode-hook      ;; wrong detection with starting || statement
                ;; 'c-mode-hook
-               'cperl-mode-hook
-               'css-mode-hook
+               ;; 'cperl-mode-hook
+               ;; 'css-mode-hook
                ;; 'emacs-lisp-mode-hook
                'git-commit-mode-hook
-               'java-mode-hook
-               'js2-mode-hook
-               'perl-mode-hook
-               'python-mode-hook
-               'sh-mode-hook
+               ;; 'java-mode-hook
+               ;; 'js2-mode-hook
+               ;; 'perl-mode-hook
+               ;; 'python-mode-hook
+               ;; 'sh-mode-hook
+               'text-mode-hook
                ))
   (add-hook mode 'turn-on-orgtbl))
 
@@ -319,7 +333,7 @@ vi style of % jumping to matching brace."
 
 ;; Do not use new frame while run ediff
 ;; http://stackoverflow.com/a/1680825
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 
 (when (file-exists-p "~/.local/bin")
   (setq exec-path (append exec-path '("~/.local/bin"))))
@@ -531,3 +545,5 @@ vi style of % jumping to matching brace."
         (buffer-list)))
 
 (provide 'hc-general)
+
+;;; hc-general.el ends here
