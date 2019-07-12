@@ -42,6 +42,9 @@
 
 (hc-keys-minor-mode 1)
 
+(add-hook 'minibuffer-setup-hook #'(lambda ()
+                                     (hc-keys-minor-mode 0)))
+
 (provide 'hc-keys)
 
 ;;; hc-keys.el ends here
