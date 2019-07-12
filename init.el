@@ -352,6 +352,9 @@
 (use-package cmake-mode
   :ensure t)
 
+(use-package qmake-mode
+  :load-path "qmake-mode/")
+
 (use-package hc-local
   :load-path "lisp/")
 
