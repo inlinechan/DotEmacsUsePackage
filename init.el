@@ -135,6 +135,7 @@
 
 (use-package yasnippet
   :ensure t
+  :diminish yas-minor-mode
   :config
   (yas-global-mode 1)
   (add-hook 'term-mode-hook (lambda() (yas-minor-mode -1))))
@@ -291,6 +292,7 @@
 
 (use-package editorconfig
   :ensure t
+  :diminish ""
   :config
   (editorconfig-mode 1))
 
@@ -356,10 +358,10 @@
   :load-path "qmake-mode/")
 
 (use-package hc-keys
+  :diminish hc-keys-minor-mode
   :load-path "lisp/")
 
 (use-package hc-local
   :load-path "lisp/")
-
 
 (load "~/.emacs.d/lisp/custom.el")
