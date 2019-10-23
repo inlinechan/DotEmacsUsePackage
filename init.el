@@ -79,6 +79,9 @@
   ;; https://github.com/magit/magit/issues/1743
   ;; use 2way ediff like we used to do in version 1.x
   (setq magit-ediff-dwim-show-on-hunks t)
+  (add-hook 'magit-diff-mode-hook
+            (lambda ()
+              (define-key magit-diff-mode-map (kbd "C-j") 'magit-diff-visit-worktree-file)))
 
   (when (and (not window-system) (string-match "1\\.4*" (magit-version)))
     (set-face-background 'magit-log-head-label-tags "Grey85")))
