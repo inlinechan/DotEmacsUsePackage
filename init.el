@@ -142,6 +142,9 @@
   (yas-global-mode 1)
   (add-hook 'term-mode-hook (lambda() (yas-minor-mode -1))))
 
+(use-package yasnippet-snippets
+  :ensure t)
+
 (use-package tern
   :ensure t
   :config
