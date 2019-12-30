@@ -104,13 +104,20 @@
 
 (define-key global-map "\C-cc" 'org-capture)
 
+;; https://emacs.stackexchange.com/questions/7629/the-syntax-highlight-and-indentation-of-source-code-block-in-exported-html-file?rq=1
+;; (setq org-html-htmlize-output-type 'css) ; default inline-css
+;; (setq org-html-htmlize-output-type 'inline-css)
+;; (setq org-html-htmlize-font-prefix "org-")
+
 (defun my-org-inline-css-hook (exporter)
-  "Insert custom inline css"
+  "Insert custom inline css if EXPORTER is html."
   (when (eq exporter 'html)
-    (let ((my-pre-bg (face-background 'default)))
-      (setq org-html-head-include-default-style nil)
-      (setq org-html-head
-            (format "<style type=\"text/css\">\n pre.src { background-color: %s;}</style>\n" my-pre-bg)))))
+    (let ((my-pre-bg (face-background 'default))
+          (my-pre-fg (face-foreground 'default)))
+      (setq org-html-head-include-default-style nil
+            org-html-head
+            ;; (format "<style type=\"text/css\">\n pre.src { background-color: %s;}</style>\n" my-pre-bg)))))
+            (format "<style type=\"text/css\">\n pre.src { background-color: %s; color: %s}</style>\n" my-pre-bg my-pre-fg)))))
 
 (add-hook 'org-export-before-processing-hook 'my-org-inline-css-hook)
 
