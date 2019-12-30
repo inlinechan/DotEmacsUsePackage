@@ -35,10 +35,6 @@
 (eval-when-compile
   (require 'use-package))
 
-(use-package jade
-  :commands jade-connect-to-chrome
-  :ensure t)
-
 (use-package company
   :ensure t
   :init (add-hook 'after-init-hook 'global-company-mode)
