@@ -16,7 +16,7 @@
     (define-key map (kbd "C-c g g") 'grep-find)
 
     (define-key map (kbd "C-M-o") 'other-window)
-    (define-key map (kbd "C-M-m") 'other-window-prev)
+    ;; (define-key map (kbd "C-M-m") 'other-window-prev)
     (define-key map (kbd "C-x C-r") 'ido-recentf-open)
 
     (define-key map (kbd "<f2> 0") 'shell)
@@ -30,7 +30,7 @@
     (define-key map (kbd "<f2> '") 'webos-cd)
     (define-key map (kbd "<f2> ]") 'frog-jump-buffer)
 
-    (define-key map (kbd "<f5> -") (lambda () (interactive) (find-file "/ssh:10.177.243.56:Documents/org/webos.org")))
+    (define-key map (kbd "<f5> -") (lambda () (interactive) (find-file "~/Documents/org/webos.org")))
     (define-key map (kbd "<f7>") (kbd "C-x + C-u - 1 6 C-x ^"))
     map)
   "A hc-keys-minor-mode keymap.")
