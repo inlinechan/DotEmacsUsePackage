@@ -178,6 +178,8 @@
          ("C-c u" . hc/gtags-update)
          :map gtags-select-mode-map
          ("q" . gtags-pop-stack)
+         ("C-o" . gtags-select-tag-other-window)
+         ("o" . gtags-select-tag-other-window)
          ("\eo" . gtags-select-tag-other-window-focus)
          ("\e*" . gtags-pop-stack)
          ("\e." . hc/tag-from-here)
