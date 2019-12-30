@@ -34,7 +34,7 @@
 
 (set-register ?0 '(file . "~/.emacs.d/init.el"))
 (set-register ?9 '(file . "~/.emacs.d/hc/hc-general.el"))
-(set-register ?- '(file . "/ssh:10.177.243.56:Documents/org/webos.org"))
+(set-register ?- '(file . "~/Documents/org/webos.org"))
 
 ;; Minimize current buffer's height
 (global-set-key [f7] (kbd "C-x + C-u - 1 6 C-x ^"))
