@@ -95,9 +95,6 @@
        (flycheck-add-mode 'json-jsonlint 'json-mode)
        (add-hook 'json-mode-hook 'flycheck-mode))))
 
-(use-package bookmark+
-  :ensure t)
-
 (use-package clang-format
   :ensure t
   :config
