@@ -19,7 +19,7 @@
 (require 'hc-ui)
 (require 'hc-shell)
 (require 'js-beautify)
-;; (require 'hc-webos)
+(require 'hc-yocto)
 
 (require 'package)
 (setq package-enable-at-startup nil)
