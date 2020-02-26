@@ -79,9 +79,9 @@
     (set-face-background 'magit-log-head-label-tags "Grey85")))
 
 (use-package json-mode
-  :ensure t
   :config
-  (setq js-indent-level 2)
+  (add-hook 'json-mode-hook (lambda ()
+                              (setq js-indent-level 2)))
   (eval-after-load 'flycheck
     `(progn
        (require 'flycheck)
