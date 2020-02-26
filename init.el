@@ -36,21 +36,14 @@
   (require 'use-package))
 
 (use-package company
-  :ensure t
   :init (add-hook 'after-init-hook 'global-company-mode)
   :config
   (setq company-backends (delete 'company-semantic company-backends)))
 
 (use-package gnuplot
-  :ensure t
-  :config
-  (setq auto-mode-alist
-        (append
-         '(("\\.dem$" . gnuplot-mode))
-         auto-mode-alist)))
+  :mode ("\\.dem\\'" . gnuplot-mode))
 
 (use-package org
-  :ensure t
   :config
   (with-eval-after-load 'org
     (require 'hc-org)))
