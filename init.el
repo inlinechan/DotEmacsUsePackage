@@ -351,17 +351,27 @@
 (use-package cmake-mode
   :ensure t)
 
+(use-package hc-local
+  :load-path "lisp/")
+
 (use-package qmake-mode
   :load-path "qmake-mode/")
 
 (use-package hc-keys
-  :diminish hc-keys-minor-mode
+  :diminish ""
   :load-path "lisp/")
 
-(use-package hc-yocto
-  :load-path "lisp/")
+;; http://rakan.me/emacs/python-dev-with-emacs-and-pyenv/
+(use-package pyenv-mode
+  :init
+  (add-to-list 'exec-path "~/.pyenv/shims")
+  (setenv "WORKON_HOME" "~/.pyenv/versions/")
+  :config
+  (pyenv-mode))
 
-(use-package hc-local
-  :load-path "lisp/")
+(use-package pyenv-mode-auto
+  :config
+  (add-hook 'python-mode-hook (lambda ()
+                                (require 'pyenv-mode-auto))))
 
 (load "~/.emacs.d/lisp/custom.el")
