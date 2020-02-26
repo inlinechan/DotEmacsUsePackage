@@ -283,9 +283,9 @@ STEP ignored for now."
 (setq mode-line-misc-info
       ;; We remove Which Function Mode from the mode line, because it's mostly
       ;; invisible here anyway.
-      (assq-delete-all 'which-func-mode mode-line-misc-info))
+      (assq-delete-all 'which-function-mode mode-line-misc-info))
 
-(setq mode-line-format (delete (assoc 'which-func-mode
+(setq mode-line-format (delete (assoc 'which-function-mode
                                       mode-line-format) mode-line-format)
       which-func-header-line-format '(which-func-mode ("" which-func-format)))
 
