@@ -45,6 +45,10 @@
 (add-hook 'minibuffer-setup-hook #'(lambda ()
                                      (hc-keys-minor-mode 0)))
 
+(set-register ?0 '(file . "~/.emacs.d/init.el"))
+(set-register ?9 '(file . "~/.emacs.d/hc/hc-general.el"))
+(set-register ?- '(file . "~/Documents/org/webos.org"))
+
 (provide 'hc-keys)
 
 ;;; hc-keys.el ends here
