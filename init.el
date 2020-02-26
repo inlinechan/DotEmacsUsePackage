@@ -348,7 +348,6 @@
   (add-hook 'python-mode-hook (lambda ()
                                 (require 'pyenv-mode-auto))))
 
-
 (use-package dockerfile-mode)
 
 (use-package diminish
