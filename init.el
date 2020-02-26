@@ -61,10 +61,9 @@
                              (setq js2-basic-offset 2
                                    js2-strict-missing-semi-warning nil
                                    js2-missing-semi-one-line-override t)))
-  :ensure t)
+  )
 
 (use-package magit
-  :ensure t
   :bind (("C-c s" . magit-status)
          ("C-x g" . magit-status))
   :config
@@ -89,7 +88,6 @@
        (add-hook 'json-mode-hook 'flycheck-mode))))
 
 (use-package clang-format
-  :ensure t
   :config
   (add-hook 'c++-mode-hook
             (lambda ()
@@ -97,7 +95,6 @@
                 (define-key c++-mode-map (kbd "C-M-\\") 'clang-format)))))
 
 (use-package flycheck
-  :ensure t
   :init (global-flycheck-mode)
   :config
   (add-hook 'c++-mode-hook
@@ -110,7 +107,6 @@
   (add-to-list 'flycheck-disabled-checkers 'python-pylint))
 
 (use-package web-mode
-  :ensure t
   :mode ("\\.jsx\\'" "\\.html\\'" "\\.css\\'")
   :config
   (setq web-mode-markup-indent-offset 2
@@ -126,20 +122,16 @@
         '(("jsx" . "\\.js[x]?\\'"))))
 
 (use-package yasnippet
-  :ensure t
   :diminish yas-minor-mode
   :config
   (yas-global-mode 1)
   (add-hook 'term-mode-hook (lambda() (yas-minor-mode -1))))
 
-(use-package yasnippet-snippets
-  :ensure t)
+(use-package yasnippet-snippets)
 
 (use-package tern
-  :ensure t
   :config
   (use-package tern-auto-complete
-    :ensure t
     :config
     (setq tern-ac-on-dot t)
     (tern-ac-setup))
@@ -150,11 +142,9 @@
                 (tern-mode t)))))
 
 (use-package markdown-mode
-  :ensure t
   :mode "\\.md\\'")
 
 (use-package google-c-style
-  :ensure t
   :config
   (add-hook 'c-mode-common-hook 'google-set-c-style))
 
@@ -237,7 +227,6 @@
   (add-hook mode 'enable-gtags-mode))
 
 (use-package flx-ido
-  :ensure t
   :config
   (ido-mode 1)
   (ido-everywhere 1)
@@ -249,23 +238,22 @@
 
 (use-package helm-ls-git
   :commands helm-browse-project
-  :config
-  (global-set-key (kbd "<f2> l") 'helm-browse-project))
+  :bind ("<f2> l" . helm-browse-project))
 
 (use-package helm-ag
   :commands helm-ag-project-root
-  :config
-  (global-set-key (kbd "<f2> g") 'helm-ag-project-root))
+  :bind ("<f2> g" . helm-ag-project-root))
 
-(use-package swift-mode)
-  ;; :ensure t)
+(use-package swift-mode
+  :disabled
+  )
 
-;; (use-package flycheck-swift
-;;   :ensure t)
-;; (eval-after-load 'flycheck '(flycheck-swift-setup))
+(use-package flycheck-swift
+  :disabled
+  (eval-after-load 'flycheck '(flycheck-swift-setup)))
 
 (use-package tide
-  :ensure t
+  :disabled
   :config
   (defun setup-tide-mode ()
     (interactive)
@@ -288,19 +276,16 @@
   (add-hook 'typescript-mode-hook #'setup-tide-mode))
 
 (use-package editorconfig
-  :ensure t
   :diminish ""
   :config
   (editorconfig-mode 1))
 
 (use-package ng2-mode
-  :ensure t
   :config
   (setq typescript-indent-level 2)
   (setq tide-format-options '(:indentSize 2)))
 
 (use-package go
-  :ensure t
   :config
   (add-hook 'go-mode-hook (lambda ()
                             (set (make-local-variable 'company-backends) '(company-go))
@@ -310,29 +295,20 @@
                             (company-mode))))
 
 (use-package company-go
-  :ensure t)
+  :after (go))
 
 (use-package helm-ls-git
-  :ensure t
   :config
   (global-set-key (kbd "<f2> l") 'helm-browse-project))
 
 (use-package helm-ag
-  :ensure t
   :config
   (global-set-key (kbd "<f2> g") 'helm-ag-project-root))
 
-(use-package virtualenvwrapper
-  :ensure t
-  :config
-  (venv-initialize-interactive-shells)
-  (add-hook 'venv-postmkvirtualenv-hook
-            (lambda () (shell-command "pip install nose flake8 jedi"))))
-
 (use-package company-jedi
-  :ensure t
-  ;; :init
-  ;; (setq jedi:key-goto-definition (kbd "C-c ."))
+  :init
+  (setq jedi:key-goto-definition (kbd "C-c ."))
+  ;; :after (python)
   :config
   (defun my/python-mode-hook ()
     (jedi:setup)
@@ -345,11 +321,9 @@
   (add-hook 'qml-mode-hook (lambda ()
                              (setq js-indent-level 4))))
 
-(use-package graphviz-dot-mode
-  :ensure t)
+(use-package graphviz-dot-mode)
 
-(use-package cmake-mode
-  :ensure t)
+(use-package cmake-mode)
 
 (use-package hc-local
   :load-path "lisp/")
