@@ -349,6 +349,17 @@
                                 (require 'pyenv-mode-auto))))
 
 
+(use-package dockerfile-mode)
+
+(use-package diminish
+  :config
+  (diminish 'auto-revert-mode "")
+  (diminish 'hc-keys "")
+  (diminish 'company-mode "Co")
+  (diminish 'flycheck-mode "FC")
+  (diminish 'eldoc-mode ""))
+
+
 (defconst tramp-local-coding-commands
   `(
     ;; (b64 base64-encode-region base64-decode-region)
