@@ -348,4 +348,30 @@
   (add-hook 'python-mode-hook (lambda ()
                                 (require 'pyenv-mode-auto))))
 
+
+(defconst tramp-local-coding-commands
+  `(
+    ;; (b64 base64-encode-region base64-decode-region)
+    (uu  tramp-uuencode-region uudecode-decode-region)
+    (pack ,(format tramp-perl-pack "perl") ,(format tramp-perl-unpack "perl")))
+  "List of local coding commands for inline transfer.
+Each item is a list that looks like this:
+
+\(FORMAT ENCODING DECODING)
+
+FORMAT is  symbol describing the encoding/decoding format.  It can be
+`b64' for base64 encoding, `uu' for uu encoding, or `pack' for simple packing.
+
+ENCODING and DECODING can be strings, giving commands, or symbols,
+giving functions.  If they are strings, then they can contain
+the \"%s\" format specifier.  If that specifier is present, the input
+file name will be put into the command line at that spot.  If the
+specifier is not present, the input should be read from standard
+input.
+
+If they are functions, they will be called with two arguments, start
+and end of region, and are expected to replace the region contents
+with the encoded or decoded results, respectively.")
+
+
 (load "~/.emacs.d/lisp/custom.el")
