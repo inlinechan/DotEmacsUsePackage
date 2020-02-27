@@ -19,7 +19,6 @@
 (require 'hc-ui)
 (require 'hc-shell)
 (require 'js-beautify)
-(require 'hc-yocto)
 
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -236,6 +235,8 @@
   ;; (setq ido-use-faces nil)
   )
 
+(use-package helm-find)
+
 (use-package helm-ls-git
   :commands helm-browse-project
   :bind ("<f2> l" . helm-browse-project))
@@ -306,10 +307,14 @@
   (global-set-key (kbd "<f2> g") 'helm-ag-project-root))
 
 (use-package helm
+  :commands webos-helm-find-1
   :config
   (setq helm-buffers-fuzzy-matching t
         helm-buffers-fuzzy-matching t
         helm-recentf-fuzzy-match t)
+  (use-package hc-yocto
+    :commands (webos-find-recipes webos-cd)
+    :load-path "hc/")
   :bind (("<f2> b" . helm-buffers-list)
          ("<f2> m" . helm-mini)))
 

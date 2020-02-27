@@ -53,79 +53,64 @@
         (kill-buffer buffer)))
     recipes))
 
-(defun webos-find-recipes (pattern)
-  "Find bitbake recipes with matching PATTERN."
-  (interactive
-   (list (helm-comp-read "recipe: " (webos-find-recipe-candidates))))
 
-  (let* ((buffer-name (concat "*Find*" " - " pattern))
-         (wtop (webos-top default-directory))
-         (recipe-buffer (get-buffer-create buffer-name))
-         (find-command nil)
-         (dir (expand-file-name wtop)))
-    (if (and wtop (string-match wtop default-directory))
-        (progn
-          (switch-to-buffer (get-buffer-create buffer-name))
+(defun helm-findutils-transformer-ignore-directory (candidates _source)
+  (let (non-essential
+        (default-directory (helm-default-directory)))
+    (cl-loop for i in candidates
+             for abs = (expand-file-name
+                        (helm-aif (file-remote-p default-directory)
+                            (concat it i) i))
+             for type = (car (file-attributes abs))
+             for disp = (if (and helm-ff-transformer-show-only-basename
+                                 (not (string-match "[.]\\{1,2\\}$" i)))
+                            (helm-basename abs) abs)
+             when (and (not (file-directory-p abs))
+                       (string-match "\\.\\(bb\\|bbappend\\|bbclass\\)$" abs))
+             collect (cond ((eq t type)
+                            (cons (propertize disp 'face 'helm-ff-directory)
+                                  abs))
+                           ((stringp type)
+                            (cons (propertize disp 'face 'helm-ff-symlink)
+                                  abs))
+                           (t (cons (propertize disp 'face 'helm-ff-file)
+                                    abs))))))
 
-          (let ((find (get-buffer-process (current-buffer))))
-            (when find
-              (if (or (not (eq (process-status find) 'run))
-                      (yes-or-no-p "A `find' process is running; kill it? "))
-                  (condition-case nil
-                      (progn
-                        (interrupt-process find)
-                        (sit-for 1)
-                        (delete-process find))
-                    (error nil))
-                (error "Cannot have two processes in `%s' at once" (buffer-name)))))
+(defvar helm-source-findutils-ignore-directory
+  (helm-build-async-source "Find"
+    :header-name (lambda (name)
+                   (concat name " in [" (helm-default-directory) "]"))
+    :candidates-process 'helm-find-shell-command-fn
+    :filtered-candidate-transformer 'helm-findutils-transformer-ignore-directory
+    :action-transformer 'helm-transform-file-load-el
+    :persistent-action 'helm-ff-kill-or-find-buffer-fname
+    :action 'helm-type-file-actions
+    :help-message 'helm-generic-file-help-message
+    :keymap helm-find-map
+    :candidate-number-limit 9999
+    :requires-pattern 3))
 
-          (widen)
-          (kill-all-local-variables)
-          (setq buffer-read-only nil)
-          (erase-buffer)
 
-          (cd wtop)
-          (setq find-command (concat "find meta\* -type f -ls | egrep \"(.*/)"
-                                     pattern
-                                     "$\""))
-          (shell-command find-command (current-buffer) "*Message*")
+(defun webos-helm-find-1 (dir)
+  (let ((default-directory (file-name-as-directory dir)))
+    (helm :sources 'helm-source-findutils-ignore-directory
+          :buffer "*helm find*"
+          :ff-transformer-show-only-basename nil
+          :webos-helm-findutils-transformer
+          :case-fold-search helm-file-name-case-fold-search)))
 
-          (dired-mode dir (cdr find-ls-option))
-          (let ((map (make-sparse-keymap)))
-            (set-keymap-parent map (current-local-map))
-            (define-key map "\C-c\C-k" 'kill-find)
-            (define-key map "g" nil)
-            (use-local-map map))
-          (make-local-variable 'dired-sort-inhibit)
 
-          (set (make-local-variable 'revert-buffer-function)
-               `(lambda (ignore-auto noconfirm)
-                  (find-dired ,dir ,find-args)))
-
-          (if (fboundp 'dired-simple-subdir-alist)
-              ;; will work even with nested dired format (dired-nstd.el,v 1.15
-              ;; and later)
-              (dired-simple-subdir-alist)
-            ;; else we have an ancient tree dired (or classic dired, where
-            ;; this does no harm)
-            (set (make-local-variable 'dired-subdir-alist)
-                 (list (cons default-directory (point-min-marker)))))
-          (set (make-local-variable 'dired-subdir-switches) find-ls-subdir-switches)
-          (setq buffer-read-only nil)
-          ;; Subdir headlerline must come first because the first marker in
-          ;; subdir-alist points there.
-          (insert "  " dir ":\n")
-          ;; Make second line a ``find'' line in analogy to the ``total'' or
-          ;; ``wildcard'' line.
-          (insert "  " find-command "\n")
-          (setq buffer-read-only t)
-          ;; (let ((proc (get-buffer-process (current-buffer))))
-          ;;   (set-process-filter proc (function find-dired-filter))
-          ;;   (set-process-sentinel proc (function find-dired-sentinel))
-          ;;   ;; Initialize the process marker; it is used by the filter.
-          ;;   (move-marker (process-mark proc) 1 (current-buffer)))
-          (setq mode-line-process '(":%s")))
-      (message "Not in webos directory"))))
+(defun webos-find-recipes ()
+  "Find bitbake recipes from wtop directory."
+  (interactive)
+  (let ((wtop (webos-top default-directory))
+        (completion-ignored-extensions
+         (append '("BUILD/" "buildhistory/" "__pycache__/" "scripts/" "cache/"
+                   "build-template/" ".py" ".patch" "sstate-cache/" "downloads/"))))
+    (if (not wtop)
+        (error "Not in webos directory")
+      (let ((ignore-dirs t))
+        (webos-helm-find-1 wtop)))))
 
 (defun webos-find-build-directories (topdir)
   "Find meta layer diretories from TOPDIR."
