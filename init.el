@@ -305,6 +305,14 @@
   :config
   (global-set-key (kbd "<f2> g") 'helm-ag-project-root))
 
+(use-package helm
+  :config
+  (setq helm-buffers-fuzzy-matching t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t)
+  :bind (("<f2> b" . helm-buffers-list)
+         ("<f2> m" . helm-mini)))
+
 (use-package company-jedi
   :init
   (setq jedi:key-goto-definition (kbd "C-c ."))
