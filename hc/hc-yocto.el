@@ -156,11 +156,30 @@
 (defun webos-cd (module)
   "`find-file' MODULE directory in webos."
   (interactive
-   (list (helm-comp-read "module: " (webos-cd-candidates))))
+   (list (ivy-completing-read "module: " (webos-cd-candidates))))
 
   (let ((wtop (webos-top default-directory)))
     (if wtop
         (find-file (webos-find-module-directory module))
+      (message "Not in webos directory"))))
+
+(defun webos-meta-candidates ()
+  "Find meta layers from webos-top."
+  (let* ((wtop (webos-top default-directory))
+         (buffer (get-buffer-create "*webos-cd*"))
+         (metas (directory-files wtop nil "\\(meta-\*\\|oe-core\\)")))
+    metas))
+
+
+(defun webos-meta (meta)
+  "`find-file' META directory in webos."
+  (interactive
+   ;; helm-comp-read
+   (list (ivy-completing-read "module: " (webos-meta-candidates))))
+
+  (let ((wtop (webos-top default-directory)))
+    (if wtop
+        (find-file (concat (file-name-as-directory wtop) meta))
       (message "Not in webos directory"))))
 
 (provide 'hc-yocto)

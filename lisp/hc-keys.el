@@ -25,9 +25,6 @@
     (define-key map (kbd "<f2> -") 'tramp-cleanup-this-connection)
 
     (define-key map (kbd "<f2> =") 'hc/kill-some-magit-buffer)
-
-    (define-key map (kbd "<f2> ;") 'webos-find-recipes)
-    (define-key map (kbd "<f2> '") 'webos-cd)
     (define-key map (kbd "<f2> ]") 'frog-jump-buffer)
 
     (define-key map (kbd "<f9> s") 'magit-status)

@@ -312,11 +312,18 @@
   (setq helm-buffers-fuzzy-matching t
         helm-buffers-fuzzy-matching t
         helm-recentf-fuzzy-match t)
-  (use-package hc-yocto
-    :commands (webos-find-recipes webos-cd)
-    :load-path "hc/")
   :bind (("<f2> b" . helm-buffers-list)
          ("<f2> m" . helm-mini)))
+
+(use-package ivy)
+
+(use-package hc-yocto
+  :after (helm ivy)
+  :commands (webos-find-recipes webos-cd webos-meta)
+  :bind (("<f2> ;" . webos-find-recipes)
+         ("<f2> '" . webos-cd)
+         ("<f2> [" . webos-meta))
+  :load-path "hc/")
 
 (use-package company-jedi
   :init
