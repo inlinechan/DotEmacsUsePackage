@@ -124,6 +124,7 @@
           :case-fold-search helm-file-name-case-fold-search)))
 
 
+;;;###autoload
 (defun webos-find-recipes ()
   "Find bitbake recipes from wtop directory."
   (interactive)
@@ -177,6 +178,7 @@
                   (setq found module))))))))
     found))
 
+;;;###autoload
 (defun webos-cd (module)
   "`find-file' MODULE directory in webos."
   (interactive
@@ -194,7 +196,7 @@
          (metas (directory-files wtop nil "\\(meta-\*\\|oe-core\\)")))
     metas))
 
-
+;;;###autoload
 (defun webos-meta (meta)
   "`find-file' META directory in webos."
   (interactive
