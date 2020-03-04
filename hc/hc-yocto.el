@@ -14,15 +14,39 @@
 
 (defun webos-top (path)
   "Return wtop from PATH."
-  (cl-some (apply-partially 'webos--top-internal path) webos-top-patterns))
+  (or (cl-some (apply-partially 'webos--top-internal path) webos-top-patterns)
+      (webos-find-build-directory-in-heirarchy path)))
+
+(defun webos--parent-directory (dir)
+  "Parent directory from DIR until $HOME or / found."
+  (let ((parent (directory-file-name dir)))
+    (unless
+        (or (equal (getenv "HOME") parent)
+            (equal "/" parent))
+      (file-name-directory parent))))
+
+(defun webos-find-build-directory-in-heirarchy (path)
+  "Search for build-directory pattern upwards through the directory hierarchy, starting from PATH."
+  (let ((current-dir (file-name-directory path))
+        (found nil))
+    (dolist (file (directory-files current-dir))
+      (dolist (pat webos-top-patterns)
+        (let ((fullpath (concat current-dir file)))
+          ;; (message "%s %s" pat fullpath)
+          (if (and (file-directory-p fullpath)
+                   (not (equal "." file))
+                   (not (equal ".." file))
+                   (string-match pat fullpath))
+              (setq found fullpath)))))
+    (if found
+        found
+      (webos-find-build-directory-in-heirarchy (webos--parent-directory current-dir)))))
 
 (defun webos--top-internal (path top-pattern)
   "Return wtop from PATH with TOP-PATTERN."
-  (let* ((case-fold-search nil)
-         (parent-dir (file-name-directory (directory-file-name path))))
-    (if (string-match top-pattern path)
-        (match-string 1 path)
-      nil)))
+  (let* ((case-fold-search nil))
+    (when (string-match top-pattern path)
+      (match-string 1 path))))
 
 (defun webos-find-meta-directories (topdir)
   "Find meta layer diretories from TOPDIR."
