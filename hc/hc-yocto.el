@@ -66,7 +66,7 @@
                                  (not (string-match "[.]\\{1,2\\}$" i)))
                             (helm-basename abs) abs)
              when (and (not (file-directory-p abs))
-                       (string-match "\\.\\(bb\\|bbappend\\|bbclass\\)$" abs))
+                       (string-match "\\.\\(bb\\|bbappend\\|bbclass\\|inc\\)$" abs))
              collect (cond ((eq t type)
                             (cons (propertize disp 'face 'helm-ff-directory)
                                   abs))
