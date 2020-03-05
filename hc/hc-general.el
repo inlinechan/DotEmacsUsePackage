@@ -488,8 +488,11 @@ STEP ignored for now."
           isearch-yank-flag t)
     (isearch-search-and-update)))
 
-(add-hook 'c-mode-common-hook
-          #'(lambda ()
+(dolist (mode (list
+               'c-mode-common-hook
+               'python-mode-hook
+               'emacs-lisp-mode))
+  (add-hook mode #'lambda ()
               (setq show-trailing-whitespace t)))
 
 (add-hook 'js2-mode-hook #'lambda()
