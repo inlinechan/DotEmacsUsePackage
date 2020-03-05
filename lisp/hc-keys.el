@@ -30,6 +30,9 @@
     (define-key map (kbd "<f2> '") 'webos-cd)
     (define-key map (kbd "<f2> ]") 'frog-jump-buffer)
 
+    (define-key map (kbd "<f9> s") 'magit-status)
+    (define-key map (kbd "<f9> f") 'ido-find-file)
+
     (define-key map (kbd "<f5> -") (lambda () (interactive) (find-file "~/Documents/org/webos.org")))
     (define-key map (kbd "<f7>") (kbd "C-x + C-u - 1 6 C-x ^"))
     map)
@@ -47,6 +50,7 @@
 
 (set-register ?0 '(file . "~/.emacs.d/init.el"))
 (set-register ?9 '(file . "~/.emacs.d/hc/hc-general.el"))
+(set-register ?8 '(file . "~/.emacs.d/lisp/hc-local.el"))
 (set-register ?- '(file . "~/Documents/org/webos.org"))
 
 (provide 'hc-keys)
