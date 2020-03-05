@@ -352,7 +352,7 @@
   :load-path "qmake-mode/")
 
 (use-package hc-keys
-  :diminish ""
+  :diminish hc-keys-minor-mode
   :load-path "lisp/")
 
 ;; http://rakan.me/emacs/python-dev-with-emacs-and-pyenv/
