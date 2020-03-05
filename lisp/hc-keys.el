@@ -32,6 +32,8 @@
 
     (define-key map (kbd "<f5> -") (lambda () (interactive) (find-file "~/Documents/org/webos.org")))
     (define-key map (kbd "<f7>") (kbd "C-x + C-u - 1 6 C-x ^"))
+
+    (define-key map [remap c-toggle-comment-style] 'isearch-forward-at-point)
     map)
   "A hc-keys-minor-mode keymap.")
 
