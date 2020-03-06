@@ -281,7 +281,9 @@ STEP ignored for now."
   (walk-windows 'which-func-update-1 nil 'visible))
 
 ;; which-func-mode in the header line
-(let ((which-func '(which-func-mode ("" which-func-format " "))))
+(let ((which-func '(which-function-mode (which-func-mode (#1="" which-func-format " ")))))
+  (setq mode-line-misc-info (delete (assoc 'which-function-mode
+                                           mode-line-misc-info) mode-line-misc-info))
   (setq-default header-line-format which-func))
 
 ;; http://stackoverflow.com/a/3669681/2229134

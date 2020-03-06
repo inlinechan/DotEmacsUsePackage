@@ -10,6 +10,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; powerline
 (use-package powerline
+  :if window-system
   :config
   (powerline-default-theme))
 
