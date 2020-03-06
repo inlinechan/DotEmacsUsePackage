@@ -280,20 +280,9 @@ STEP ignored for now."
   "Update the Which-Function mode display for all windows."
   (walk-windows 'which-func-update-1 nil 'visible))
 
-(setq mode-line-misc-info
-      ;; We remove Which Function Mode from the mode line, because it's mostly
-      ;; invisible here anyway.
-      (assq-delete-all 'which-function-mode mode-line-misc-info))
-
-(setq mode-line-format (delete (assoc 'which-function-mode
-                                      mode-line-format) mode-line-format)
-      which-func-header-line-format '(which-func-mode ("" which-func-format)))
-
-(defadvice which-func-ff-hook (after header-line activate)
-  (when which-func-mode
-    (setq mode-line-format (delete (assoc 'which-func-mode
-                                          mode-line-format) mode-line-format)
-          header-line-format '((which-func-mode ("" which-func-format " "))))))
+;; which-func-mode in the header line
+(let ((which-func '(which-func-mode ("" which-func-format " "))))
+  (setq-default header-line-format which-func))
 
 ;; http://stackoverflow.com/a/3669681/2229134
 (setq frame-title-format
