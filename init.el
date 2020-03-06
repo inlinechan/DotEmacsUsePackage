@@ -149,10 +149,13 @@
 
 ;; gtags
 (use-package gtags
+  :diminish gtags-mode
   :load-path "lisp/"
   :init
   (setq gtags-path-style 'relative
         gtags-ignore-case nil)
+  ;; To fix up "Key sequence C-c g p starts with non-prefix"
+  (global-set-key (kbd "C-c g") nil)
   :commands (gtags-mode gtags-find-file)
   :bind (("C-c C-f" . gtags-find-file)
          ("C-c g p" . gtags-find-pattern)
@@ -372,12 +375,11 @@
 
 (use-package diminish
   :config
-  (diminish 'auto-revert-mode "")
-  (diminish 'hc-keys "")
+  (diminish 'abbrev-mode)
+  (diminish 'auto-revert-mode)
   (diminish 'company-mode "Co")
-  (diminish 'flycheck-mode "FC")
-  (diminish 'eldoc-mode ""))
-
+  (diminish 'eldoc-mode)
+  (diminish 'flycheck-mode "Fc"))
 
 (defconst tramp-local-coding-commands
   `(
