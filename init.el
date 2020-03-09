@@ -221,6 +221,7 @@
 ;; global scope begin
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun enable-gtags-mode ()
+  (diminish 'gtags-mode)
   (gtags-mode 1))
 
 (dolist (mode (list 'c++-mode-hook
