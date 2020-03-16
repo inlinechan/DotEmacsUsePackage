@@ -344,6 +344,7 @@
   :load-path "lisp/")
 
 (use-package qmake-mode
+  :if (file-directory-p "~/.emacs.d/qmake-mode")
   :load-path "qmake-mode/")
 
 (use-package hc-keys
