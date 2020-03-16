@@ -301,14 +301,6 @@
 (use-package company-go
   :after (go))
 
-(use-package helm-ls-git
-  :config
-  (global-set-key (kbd "<f2> l") 'helm-browse-project))
-
-(use-package helm-ag
-  :config
-  (global-set-key (kbd "<f2> g") 'helm-ag-project-root))
-
 (use-package helm
   :commands webos-helm-find-1
   :config
