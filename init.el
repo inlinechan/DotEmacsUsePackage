@@ -317,7 +317,7 @@
                                 (t . ivy--regex-fuzzy))))
 
 (use-package hc-yocto
-  :after (helm ivy)
+  :after (ivy)
   :config
   (setq ivy-re-builders-alist
         (append '((webos-find-recipes-2 . ivy--regex-plus)) ivy-re-builders-alist))

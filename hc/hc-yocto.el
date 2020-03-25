@@ -53,90 +53,6 @@
   (when topdir
     (directory-files topdir nil "^\\(.*\\(meta\\|oe-core\\)\\).*$")))
 
-(defun webos-find-recipe-candidates ()
-  "Find bitbake recipe candidates in the subdirectories recursively."
-  (let* ((wtop (webos-top default-directory))
-         (recipe-directories (mapconcat #'identity (webos-find-meta-directories wtop) " "))
-         (buffer (get-buffer-create "*webos-recipe*"))
-         ;; (find-command "find -E meta* -type f -regex \".*(bb|bbappend|bbclass)$\" ") ;; mac
-         (find-command (concat "find " recipe-directories " -type f \\( "
-                               "-name \\*.bb -o -name \\*.bbclass "
-                               "-o -name \\*.bbappend -o -name \\*.inc"
-                               " \\)"))
-         (recipes nil))
-    (when wtop
-      (progn
-        (with-current-buffer buffer
-          (erase-buffer)
-          (cd wtop)
-          (when (= 0 (call-process-shell-command find-command nil buffer))
-            (setq recipes (mapcar #'(lambda (path)
-                                      (let ((parts (split-string path "/")))
-                                        (last parts)))
-                                  (split-string (buffer-string))))))
-        (kill-buffer buffer)))
-    recipes))
-
-
-(defun helm-findutils-transformer-ignore-directory (candidates _source)
-  (let (non-essential
-        (default-directory (helm-default-directory)))
-    (cl-loop for i in candidates
-             for abs = (expand-file-name
-                        (helm-aif (file-remote-p default-directory)
-                            (concat it i) i))
-             for type = (car (file-attributes abs))
-             for disp = (if (and helm-ff-transformer-show-only-basename
-                                 (not (string-match "[.]\\{1,2\\}$" i)))
-                            (helm-basename abs) abs)
-             when (and (not (file-directory-p abs))
-                       (string-match "\\.\\(bb\\|bbappend\\|bbclass\\|inc\\)$" abs))
-             collect (cond ((eq t type)
-                            (cons (propertize disp 'face 'helm-ff-directory)
-                                  abs))
-                           ((stringp type)
-                            (cons (propertize disp 'face 'helm-ff-symlink)
-                                  abs))
-                           (t (cons (propertize disp 'face 'helm-ff-file)
-                                    abs))))))
-
-(defvar helm-source-findutils-ignore-directory
-  (helm-build-async-source "Find"
-    :header-name (lambda (name)
-                   (concat name " in [" (helm-default-directory) "]"))
-    :candidates-process 'helm-find-shell-command-fn
-    :filtered-candidate-transformer 'helm-findutils-transformer-ignore-directory
-    :action-transformer 'helm-transform-file-load-el
-    :persistent-action 'helm-ff-kill-or-find-buffer-fname
-    :action 'helm-type-file-actions
-    :help-message 'helm-generic-file-help-message
-    :keymap helm-find-map
-    :candidate-number-limit 9999
-    :requires-pattern 3))
-
-
-(defun webos-helm-find-1 (dir)
-  (let ((default-directory (file-name-as-directory dir)))
-    (helm :sources 'helm-source-findutils-ignore-directory
-          :buffer "*helm find*"
-          :ff-transformer-show-only-basename nil
-          :webos-helm-findutils-transformer
-          :case-fold-search helm-file-name-case-fold-search)))
-
-
-;;;###autoload
-(defun webos-find-recipes ()
-  "Find bitbake recipes from wtop directory."
-  (interactive)
-  (let ((wtop (webos-top default-directory))
-        (completion-ignored-extensions
-         (append '("BUILD/" "buildhistory/" "__pycache__/" "scripts/" "cache/"
-                   "build-template/" ".py" ".patch" "sstate-cache/" "downloads/"))))
-    (if (not wtop)
-        (error "Not in webos directory")
-      (let ((ignore-dirs t))
-        (webos-helm-find-1 wtop)))))
-
 (defun webos-find-build-directories (topdir)
   "Find meta layer diretories from TOPDIR."
   (when topdir
@@ -205,7 +121,6 @@
 (defun webos-meta (meta)
   "`find-file' META directory in webos."
   (interactive
-   ;; helm-comp-read
    (list (ivy-completing-read "module: " (webos-meta-candidates))))
 
   (let ((wtop (webos-top default-directory)))
