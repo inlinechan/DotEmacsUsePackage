@@ -481,10 +481,12 @@ STEP ignored for now."
 
 (dolist (mode (list
                'c-mode-common-hook
+               'qml-mode-hook
+               'js-mode-hook
                'python-mode-hook
                'emacs-lisp-mode))
-  (add-hook mode #'lambda ()
-              (setq show-trailing-whitespace t)))
+  (add-hook mode (lambda ()
+                   (setq show-trailing-whitespace t))))
 
 (add-hook 'js2-mode-hook #'lambda()
           (setq js2-basic-offset 2))
