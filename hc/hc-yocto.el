@@ -51,7 +51,7 @@
 (defun webos-find-meta-directories (topdir)
   "Find meta layer diretories from TOPDIR."
   (when topdir
-    (directory-files topdir 'full "^\\(.*\\(meta\\|oe-core\\)\\).*$")))
+    (directory-files topdir nil "^\\(.*\\(meta\\|oe-core\\)\\).*$")))
 
 (defun webos-find-recipe-candidates ()
   "Find bitbake recipe candidates in the subdirectories recursively."
@@ -213,6 +213,43 @@
         (find-file (concat (file-name-as-directory wtop) meta))
       (message "Not in webos directory"))))
 
+
+(defun webos-find-recipe-candidates-2 ()
+  "Find bitbake recipe candidates in the subdirectories recursively."
+  (let* ((wtop (webos-top default-directory))
+         (recipe-directories (mapconcat #'identity (webos-find-meta-directories wtop) " "))
+         (buffer (get-buffer-create "*webos-recipe*"))
+         ;; (find-command "find -E meta* -type f -regex \".*(bb|bbappend|bbclass)$\" ") ;; mac
+         (find-command (concat "find " recipe-directories " -type f \\( "
+                               "-name \\*.bb -o -name \\*.bbclass "
+                               "-o -name \\*.bbappend -o -name \\*.inc"
+                               " \\)"))
+         (recipes nil))
+    (when wtop
+      (progn
+        (with-current-buffer buffer
+          (erase-buffer)
+          (cd wtop)
+          (when (= 0 (call-process-shell-command find-command nil buffer))
+            (setq recipes (split-string (buffer-string))))))
+      (kill-buffer buffer))
+    recipes))
+
+;;;###autoload
+(defun webos-find-recipes-2 ()
+  "Find bitbake recipes from wtop directory."
+  (interactive)
+
+  (let* ((choices (webos-find-recipe-candidates-2))
+         (recipe (ivy-read "Recipe: " choices
+                           :require-match t
+                           :caller 'webos-find-recipes-2)))
+    (let* ((wtop (file-name-as-directory (webos-top default-directory)))
+           (fullpath (concat (file-name-directory wtop) recipe)))
+      (if wtop
+          (find-file fullpath))
+        (message "Not in webos directory"))))
+
 (provide 'hc-yocto)
 
-;;; hc-webos ends here
+;;; hc-yocto.el ends here

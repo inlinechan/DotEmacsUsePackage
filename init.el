@@ -314,8 +314,11 @@
 
 (use-package hc-yocto
   :after (helm ivy)
+  :config
+  (setq ivy-re-builders-alist
+        (append '((webos-find-recipes-2 . ivy--regex-plus)) ivy-re-builders-alist))
   :commands (webos-find-recipes webos-cd webos-meta)
-  :bind (("<f2> ;" . webos-find-recipes)
+  :bind (("<f2> ;" . webos-find-recipes-2)
          ("<f2> '" . webos-cd)
          ("<f2> [" . webos-meta))
   :load-path "hc/")
