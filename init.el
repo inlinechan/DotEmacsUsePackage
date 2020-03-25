@@ -310,7 +310,11 @@
   :bind (("<f2> b" . helm-buffers-list)
          ("<f2> m" . helm-mini)))
 
-(use-package ivy)
+(use-package ivy
+  :config
+  (setq ivy-re-builders-alist '((swiper-isearch . ivy--regex-plus)
+                                (ivy-switch-buffer . ivy--regex-fuzzy)
+                                (t . ivy--regex-fuzzy))))
 
 (use-package hc-yocto
   :after (helm ivy)
