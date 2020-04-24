@@ -27,7 +27,10 @@
     (define-key map (kbd "<f2> =") 'hc/kill-some-magit-buffer)
     (define-key map (kbd "<f2> ]") 'frog-jump-buffer)
 
+    (define-key map (kbd "<f2> i") 'ibuffer)
+
     (define-key map (kbd "<f9> s") 'magit-status)
+    (define-key map (kbd "<f9> b") 'magit-blame-addition)
     (define-key map (kbd "<f9> f") 'ido-find-file)
 
     (define-key map (kbd "<f5> -") (lambda () (interactive) (find-file "~/Documents/org/webos.org")))

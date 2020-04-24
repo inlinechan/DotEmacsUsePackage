@@ -27,6 +27,9 @@
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 
+;; first time only once then comment out again
+;; (setq use-package-always-ensure t)
+
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -239,8 +242,6 @@
   ;; (setq ido-use-faces nil)
   )
 
-(use-package helm-find)
-
 (use-package helm-ls-git
   :commands helm-browse-project
   :bind ("<f2> l" . helm-browse-project))
@@ -329,6 +330,7 @@
   :load-path "hc/")
 
 (use-package company-jedi
+  :disabled
   :init
   (setq jedi:key-goto-definition (kbd "C-c ."))
   ;; :after (python)
@@ -406,5 +408,8 @@ If they are functions, they will be called with two arguments, start
 and end of region, and are expected to replace the region contents
 with the encoded or decoded results, respectively.")
 
+
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 
 (load "~/.emacs.d/lisp/custom.el")
