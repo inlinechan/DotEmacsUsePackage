@@ -376,6 +376,23 @@
 
 (use-package dockerfile-mode)
 
+(use-package git-commit
+  :after magit
+  :config
+  (setq git-commit-summary-max-length 72)
+  (setq git-commit-known-pseudo-headers
+        '("Signed-off-by"
+          "Acked-by"
+          "Modified-by"
+          "Cc"
+          "Suggested-by"
+          "Reported-by"
+          "Tested-by"
+          "Reviewed-by"))
+  (setq git-commit-style-convention-checks
+        '(non-empty-second-line
+          overlong-summary-line)))
+
 (use-package diminish
   :config
   (diminish 'abbrev-mode)
