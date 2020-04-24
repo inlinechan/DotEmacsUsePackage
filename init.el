@@ -66,7 +66,9 @@
   )
 
 (use-package magit
+  :commands (magit-status magit-blame-addition)
   :bind (("C-c s" . magit-status)
+         ("<f2> b" . magit-blame-addition)
          ("C-x g" . magit-status))
   :config
   ;; https://github.com/magit/magit/issues/1743
@@ -243,10 +245,13 @@
   )
 
 (use-package helm-ls-git
+  :disabled
   :commands helm-browse-project
-  :bind ("<f2> l" . helm-browse-project))
+  :bind (("C-c C-l" . helm-browse-project)
+         ("C-c g l" . helm-browse-project)))
 
 (use-package helm-ag
+  :disabled
   :commands helm-ag-project-root
   :bind ("<f2> g" . helm-ag-project-root))
 
@@ -304,6 +309,7 @@
   :after (go))
 
 (use-package helm
+  :disabled
   :commands webos-helm-find-1
   :config
   (setq helm-buffers-fuzzy-matching t
@@ -489,6 +495,8 @@ with the encoded or decoded results, respectively.")
 
 
 (setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
+(when (file-exists-p custom-file)
+  (load custom-file))
+
 
 (load "~/.emacs.d/lisp/custom.el")

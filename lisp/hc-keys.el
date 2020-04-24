@@ -37,6 +37,8 @@
     (define-key map (kbd "<f7>") (kbd "C-x + C-u - 1 6 C-x ^"))
 
     (define-key map [remap c-toggle-comment-style] 'isearch-forward-at-point)
+    (define-key map [remap c-submit-bug-report] 'magit-blame-addition)
+    (define-key map [remap js-set-js-context] 'magit-status)
     map)
   "A hc-keys-minor-mode keymap.")
 
