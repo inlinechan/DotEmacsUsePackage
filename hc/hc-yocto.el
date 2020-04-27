@@ -96,6 +96,21 @@
                     (setq found module)))))))))
     found))
 
+(defun webos--sole-child (dir)
+  "Return fullpath of sole child if any from DIR."
+  (let ((children (delete ".." (delete "." (directory-files dir)))))
+    (if (eq 1 (length children))
+        (concat (file-name-as-directory dir) (car children))
+      dir)))
+
+(defun webos--git-child (dir)
+  "Return fullpath of git directory if any from DIR."
+  (let ((children (delete ".." (delete "." (directory-files dir))))
+        (git-dir "git"))
+    (if (cl-find-if (lambda (x) (string-equal git-dir x)) children)
+        (concat (file-name-as-directory dir) git-dir)
+      dir)))
+
 ;;;###autoload
 (defun webos-cd (module)
   "`find-file' MODULE directory in webos."
@@ -107,7 +122,7 @@
     (if wtop
         (if (file-directory-p fullpath)
             (find-file fullpath)
-          (find-file (webos-find-module-directory module)))
+          (find-file (webos--git-child (webos--sole-child (webos-find-module-directory module)))))
       (message "Not in webos directory"))))
 
 (defun webos-meta-candidates ()
