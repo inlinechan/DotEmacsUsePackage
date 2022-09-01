@@ -211,6 +211,16 @@
            (start-process-shell-command mktag-script buffer-name mktag-script)
            (switch-to-buffer buffer-name))))
 
+  (defun hc/mktag-webos (dir)
+    (interactive "Dmktag-webos (directory): ")
+    (let ((mktag-script "~/bin/webos/mktag_webos.py")
+          (buffer-name "*mktag-webos*"))
+      (and (executable-find mktag-script)
+           (or (cd dir) (error "Fail to change directory to %s" dir))
+           (start-process-shell-command mktag-script buffer-name
+                                        (concat "python" " " mktag-script))
+           (switch-to-buffer buffer-name))))
+
   (defun hc/gtags-update (dir)
     (interactive "Dglobal -u (directory): ")
     (let ((global-script "global")
