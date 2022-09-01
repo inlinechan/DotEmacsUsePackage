@@ -336,6 +336,14 @@
                                 (t . ivy--regex-fuzzy)))
   :bind (("C-x b" . ivy-switch-buffer)))
 
+(use-package counsel
+  :ensure t
+  :bind (("<f9> r" . counsel-recentf)
+         ("<f2> l" . counsel-git)
+         ("M-x" . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         ("M-y" . counsel-yank-pop)))
+
 (use-package hc-yocto
   :after (ivy)
   :config
