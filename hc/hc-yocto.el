@@ -60,30 +60,32 @@
 
 (defun webos-cd-candidates ()
   "`find-file' to DIR."
-  (let* ((wtop (webos-top default-directory))
-         (buffer (get-buffer-create "*webos-cd*"))
-         (dirs '("wtop"))
-         (webos-builddir (webos-find-build-directories wtop))
-         (command (concat "ls " webos-builddir "\*/work/\* | grep -v \":$\" | sed \"/^\s\*$/d\"")))
-    (when wtop
-      (with-current-buffer buffer
-        (erase-buffer)
-        (cd wtop)
-        (when (= 0 (call-process-shell-command command nil buffer))
-          (setq dirs (append dirs (split-string (buffer-string))))))
-      (kill-buffer buffer)
-      dirs)))
+  (when (webos-top default-directory)
+    ;; (message "top: %s" (webos-top default-directory))
+    (let* ((wtop (webos-top default-directory))
+           (buffer (get-buffer-create "*webos-cd*"))
+           (dirs '("wtop"))
+           (webos-builddir (webos-find-build-directories wtop))
+           (command (concat "ls " webos-builddir "\*/work/\* | grep -v \":$\" | sed \"/^\s\*$/d\"")))
+      (when wtop
+        (with-current-buffer buffer
+          (erase-buffer)
+          (cd wtop)
+          (when (= 0 (call-process-shell-command command nil buffer))
+            (setq dirs (append dirs (split-string (buffer-string))))))
+        (kill-buffer buffer)
+        dirs))))
 
 (defun webos-find-module-directory (target)
   "Find module directory TARGET from webos-top."
   (let* ((wtop (webos-top default-directory))
          (webos-builddir (webos-find-build-directories wtop))
+         (case-fold-search nil)
          (found nil))
     (if (equal target "wtop")
         (setq found wtop)
       (dolist (build (directory-files wtop t))
         ;; (message "build: %s" build))))
-        (setq case-fold-search nil)
         (when (and (file-directory-p build)
                    (string-match (concat "^" webos-builddir) (car (last (split-string build "/")))))
           (let ((work (concat build "/work")))
@@ -123,7 +125,7 @@
         (if (file-directory-p fullpath)
             (find-file fullpath)
           (find-file (webos--git-child (webos--sole-child (webos-find-module-directory module)))))
-      (message "Not in webos directory"))))
+      (error "Not in webos directory"))))
 
 (defun webos-meta-candidates ()
   "Find meta layers from webos-top."
@@ -141,7 +143,7 @@
   (let ((wtop (webos-top default-directory)))
     (if wtop
         (find-file (concat (file-name-as-directory wtop) meta))
-      (message "Not in webos directory"))))
+      (error "Not in webos directory"))))
 
 
 (defun webos-find-recipe-candidates-2 ()
