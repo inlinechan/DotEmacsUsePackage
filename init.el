@@ -344,6 +344,10 @@
          ("C-x C-f" . counsel-find-file)
          ("M-y" . counsel-yank-pop)))
 
+(use-package swiper
+  :ensure t
+  :bind (("C-M-r" . swiper-isearch-backward)))
+
 (use-package hc-yocto
   :after (ivy)
   :config
