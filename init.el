@@ -503,6 +503,11 @@
         '(non-empty-second-line
           overlong-summary-line)))
 
+(use-package modern-cpp-font-lock
+  :ensure t
+  :config
+  (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
+
 (defconst tramp-local-coding-commands
   `(
     ;; (b64 base64-encode-region base64-decode-region)
