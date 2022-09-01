@@ -103,9 +103,10 @@
   :config
   (add-hook 'c++-mode-hook
             (lambda ()
-              (setq flycheck-gcc-language-standard "c++11"
-                    flycheck-clang-language-standard "c++11"
-                    flycheck-clang-warnings '("all" "extra" "no-c++11-extensions"))))
+              (add-to-list 'flycheck-disabled-checkers 'c/c++-cppcheck)
+              (setq flycheck-gcc-language-standard "c++1z"
+                    flycheck-clang-language-standard "c++1z"
+                    flycheck-clang-warnings '("all" "extra" "no-c++1z-extensions"))))
 
   (add-to-list 'flycheck-disabled-checkers 'python-flake8)
   (add-to-list 'flycheck-disabled-checkers 'python-pylint))
