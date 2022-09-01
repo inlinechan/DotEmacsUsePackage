@@ -510,6 +510,8 @@ STEP ignored for now."
   "Run \\[grep-find] on git root, with user-specified args COMMAND-ARGS."
   (interactive
    (progn
+     (let ((cmd "find . -type f -print0 | xargs -0 -P 10 grep --color -nH --null -e "))
+       (grep-apply-setting 'grep-find-command (cons cmd (+ 1 (length cmd)))))
      (grep-compute-defaults)
      (if grep-find-command
          (list (read-shell-command "Run find (like this): "
