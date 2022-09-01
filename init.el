@@ -329,10 +329,12 @@
          ("<f2> m" . helm-mini)))
 
 (use-package ivy
+  :ensure t
   :config
   (setq ivy-re-builders-alist '((swiper-isearch . ivy--regex-plus)
                                 (ivy-switch-buffer . ivy--regex-fuzzy)
-                                (t . ivy--regex-fuzzy))))
+                                (t . ivy--regex-fuzzy)))
+  :bind (("C-x b" . ivy-switch-buffer)))
 
 (use-package hc-yocto
   :after (ivy)
