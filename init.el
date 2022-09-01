@@ -358,8 +358,11 @@
   (add-hook 'python-mode-hook 'my/python-mode-hook))
 
 (use-package qml-mode
+  :mode ("\\.qmltypes\\'" . qml-mode)
   :config
   (add-hook 'qml-mode-hook (lambda ()
+                             (setq-local comment-start "// ")
+                             (setq-local comment-end "")
                              (setq js-indent-level 4))))
 
 (use-package graphviz-dot-mode)
