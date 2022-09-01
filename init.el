@@ -367,7 +367,9 @@
 
 (use-package graphviz-dot-mode)
 
-(use-package cmake-mode)
+(use-package cmake-mode
+  :custom
+  (cmake-tab-width 4 "Number of columns to indent cmake blocks"))
 
 (use-package hc-local
   :load-path "lisp/")
