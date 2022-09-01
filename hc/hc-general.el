@@ -191,6 +191,17 @@ STEP ignored for now."
                  (c-access-key .
                                "\\<\\(signals\\|public\\|protected\\|private\\|public slots\\|protected slots\\|private slots\\):")
                  (c-basic-offset . 4)))
+
+  (c-add-style "weston"
+               '("gnu"
+                 (fill-column . 80)
+                 (c++-indent-level . 4)
+                 (c-basic-offset . 4)
+                 (tab-width . 4)
+                 (indent-tabs-mode . t)
+                 (c-offsets-alist . ((arglist-intro . ++)
+                                     (innamespace . 0)
+                                     (member-init-intro . ++)))))
 )
 
 (defun hc/decide-c-mode-style ()
@@ -219,9 +230,11 @@ STEP ignored for now."
       (c-set-style "llvm.org"))
      ((or (string-match "luna-surfacemanager" buffer-file-name)
           (string-match "[Qq][Tt]" buffer-file-name)
-          (string-match "wayland" buffer-file-name)
           (string-match "qml" buffer-file-name))
       (c-set-style "qt-gnu"))
+     ((or (string-match "weston" buffer-file-name)
+          (string-match "wayland" buffer-file-name))
+      (c-set-style "weston"))
      (t
       (c-set-style "hc")))))
 
