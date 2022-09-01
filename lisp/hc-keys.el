@@ -20,9 +20,12 @@
     (define-key map (kbd "C-x C-r") 'ido-recentf-open)
 
     (define-key map (kbd "<f2> 0") 'shell)
-    (define-key map (kbd "<f2> 9") 'visit-term-buffer) ; ansi-term
-    (define-key map (kbd "<f2> h") 'grep-find-on-git-root)
+    (define-key map (kbd "<f2> 9") (lambda () (interactive) (shell "*shell*<2>")))
+    (define-key map (kbd "<f2> 8") (lambda () (interactive) (shell "*shell*<3>")))
+    (define-key map (kbd "<f2> o") 'visit-term-buffer) ; ansi-term
     (define-key map (kbd "<f2> -") 'tramp-cleanup-this-connection)
+
+    (define-key map (kbd "<f2> h") 'grep-find-on-git-root)
 
     (define-key map (kbd "<f2> =") 'hc/kill-some-magit-buffer)
     (define-key map (kbd "<f2> ]") 'frog-jump-buffer)
