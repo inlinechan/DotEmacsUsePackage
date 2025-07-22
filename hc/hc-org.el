@@ -172,5 +172,9 @@
 (global-set-key (kbd "<f12>") 'org-clock-goto)
 (global-set-key (kbd "C-<f12>") 'org-clock-in)
 
+;; https://www.reddit.com/r/emacs/comments/ad68zk/get_easytemplates_back_in_orgmode_92/
+;; to bring back easy-templates <s #+begin-src ~ #+end_src
+(require 'org-tempo)
+
 (provide 'hc-org)
 ;;; hc-org ends here
