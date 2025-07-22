@@ -20,7 +20,7 @@
 (global-set-key (kbd "C-M-o") 'other-window)
 (global-set-key (kbd "C-M-m") 'other-window-prev)
 
-(global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+;; (global-set-key (kbd "C-x C-r") 'hc/recentf-open)
 
 (global-set-key (kbd "<f2> 0") 'shell)
 (global-set-key (kbd "<f2> 9") 'visit-term-buffer) ; ansi-term
