@@ -61,10 +61,16 @@
 (add-hook 'minibuffer-setup-hook #'(lambda ()
                                      (hc-keys-minor-mode 0)))
 
-(set-register ?0 '(file . "~/.emacs.d/init.el"))
-(set-register ?9 '(file . "~/.emacs.d/hc/hc-general.el"))
-(set-register ?8 '(file . "~/.emacs.d/lisp/hc-local.el"))
-(set-register ?- '(file . "~/Documents/org/webos.org"))
+;; TODO: use relative path
+;; Keep others in lisp/hc-local.el
+;; (set-register ?0 '(file . "~/.emacs.d/init.el"))
+;; (set-register ?9 '(file . "~/.emacs.d/hc/hc-general.el"))
+;; (set-register ?8 '(file . "~/.emacs.d/lisp/hc-local.el"))
+(set-register ?0 (cons 'file user-init-file))
+(let ((file (concat user-emacs-directory "lisp/hc-local.el")))
+  (set-register ?9  (cons 'file file)))
+(let ((file (concat user-emacs-directory "hc/hc-general.el")))
+  (set-register ?8  (cons 'file file)))
 
 (provide 'hc-keys)
 
