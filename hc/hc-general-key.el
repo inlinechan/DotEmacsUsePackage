@@ -32,8 +32,10 @@
 (global-set-key (kbd "<f2> ;") 'webos-find-recipes)
 (global-set-key (kbd "<f2> '") 'webos-cd)
 
-(set-register ?0 '(file . "~/.emacs.d/init.el"))
-(set-register ?9 '(file . "~/.emacs.d/hc/hc-general.el"))
+;; (set-register ?0 '(file . "~/.emacs.d/init.el"))
+(set-register ?0 '(file . user-init-file))
+;; (set-register ?9 '(file . "~/.emacs.d/hc/hc-general.el"))
+(set-register ?9 '(file . '(concat user-emacs-directory "hc-local.el")))
 (set-register ?- '(file . "~/Documents/org/webos.org"))
 
 ;; Minimize current buffer's height

@@ -11,7 +11,8 @@
 
 ;;; Code:
 
-(add-to-list 'load-path "~/.emacs.d/hc")
+;; (add-to-list 'load-path "~/DotEmacsUsePackage_30/hc")
+(add-to-list 'load-path (concat user-emacs-directory "hc"))
 
 (require 'hc-general)
 ;; (require 'hc-general-key)
