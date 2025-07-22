@@ -24,52 +24,40 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 
+(setq package-check-signature nil)
+
 ;; first time only once then comment out again
-;; (setq use-package-always-ensure t)
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(require 'use-package)
 
-(eval-when-compile
-  (require 'use-package))
+;; (unless (package-installed-p 'use-package)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
 
-(use-package company
-  :init (add-hook 'after-init-hook 'global-company-mode)
+;; (eval-when-compile
+;;   (require 'use-package))
+
+(use-package diminish
+  :ensure t
   :config
-  (setq company-backends (delete 'company-semantic company-backends)))
-
-(use-package gnuplot
-  :mode ("\\.dem\\'" . gnuplot-mode))
-
-(use-package org
-  :config
-  (with-eval-after-load 'org
-    (require 'hc-org)))
-
-(use-package js2-mode
-  :mode "\\.js\\'"
-  :interpreter "javascript"
-  :config
-  (defun override-gtags-find-file-hook ()
-    (local-set-key (kbd "C-c C-f") 'gtags-find-file)
-    (local-set-key (kbd "<f5>") 'js2-mode-toggle-hide-functions))
-
-  (add-hook 'js2-mode-hook 'override-gtags-find-file-hook)
-  (add-hook 'js2-mode-hook (lambda ()
-                             (setq js2-basic-offset 2
-                                   js2-strict-missing-semi-warning nil
-                                   js2-missing-semi-one-line-override t)))
-  )
+  (diminish 'abbrev-mode)
+  (diminish 'auto-revert-mode)
+  (diminish 'company-mode "Co")
+  (diminish 'eldoc-mode)
+  (diminish 'flycheck-mode "Fc"))
 
 (use-package magit
+  :ensure t
   :commands (magit-status magit-blame-addition)
   :bind (("C-c s" . magit-status)
          ("<f2> b" . magit-blame-addition)
+         ("C-c g b" . magit-blame-addition)
          ("C-x g" . magit-status))
   :config
   ;; https://github.com/magit/magit/issues/1743
