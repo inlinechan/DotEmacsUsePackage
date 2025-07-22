@@ -24,6 +24,13 @@
   ;; (set-frame-font "Menlo-14")
   (set-frame-font "Ubuntu-Mono-14"))
 
+(when (and window-system (eq system-type 'gnu/linux))
+  (set-frame-size (selected-frame) 120 40)
+  (set-frame-font "Ubuntu Mono 14")
+  ;; for 3440x1440 ultra wide
+  ;; (set-frame-font "Ubuntu Mono 28")
+)
+
 (load-theme 'tango-dark)
 
 (provide 'hc-ui)
