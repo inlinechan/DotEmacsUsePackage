@@ -454,10 +454,10 @@ STEP ignored for now."
                                   (make-local-variable 'python-indent)
                                   (setq python-indent 2))))
 
-(let ((org-jekyll-publish-path "~/Documents/org-jekyll/lisp"))
-  (when (file-directory-p org-jekyll-publish-path)
-    (add-to-list 'load-path org-jekyll-publish-path)
-    (require 'org-jekyll-publish nil t)))
+;; (let ((org-jekyll-publish-path "~/Documents/org-jekyll/lisp"))
+;;   (when (file-directory-p org-jekyll-publish-path)
+;;     (add-to-list 'load-path org-jekyll-publish-path)
+;;     (require 'org-jekyll-publish nil t)))
 
 ;; If non-nil, Dired tries to guess a default target directory. AWESOME
 ;; (setq dired-dwim-target t)
