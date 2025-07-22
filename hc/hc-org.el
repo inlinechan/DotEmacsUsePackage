@@ -41,7 +41,7 @@
          (gnuplot . t)
          (clojure . t)
          ;; (sh . t)
-         (ledger . t)
+         ;; (ledger . t)
          (org . t)
          (plantuml . t)
          (latex . t)
