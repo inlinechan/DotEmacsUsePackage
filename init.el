@@ -124,6 +124,7 @@
 (use-package yasnippet-snippets)
 
 (use-package tern
+  :disabled
   :config
   (use-package tern-auto-complete
     :config
