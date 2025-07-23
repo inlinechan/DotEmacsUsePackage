@@ -176,5 +176,8 @@
 ;; to bring back easy-templates <s #+begin-src ~ #+end_src
 (require 'org-tempo)
 
+(use-package ox-confluence
+  :load-path "lisp/")
+
 (provide 'hc-org)
 ;;; hc-org ends here
