@@ -321,12 +321,12 @@
   :custom
   (cmake-tab-width 4 "Number of columns to indent cmake blocks"))
 
-(use-package hc-local
-  :load-path "lisp/")
-
 (use-package qmake-mode
   :if (file-directory-p "~/.emacs.d/qmake-mode")
   :load-path "qmake-mode/")
+
+(use-package hc-local
+  :load-path "lisp/")
 
 (use-package hc-keys
   :diminish hc-keys-minor-mode
@@ -334,6 +334,7 @@
 
 ;; http://rakan.me/emacs/python-dev-with-emacs-and-pyenv/
 (use-package pyenv-mode
+  :disabled
   :init
   (add-to-list 'exec-path "~/.pyenv/shims")
   (setenv "WORKON_HOME" "~/.pyenv/versions/")
@@ -341,6 +342,7 @@
   (pyenv-mode))
 
 (use-package pyenv-mode-auto
+  :disabled
   :config
   (add-hook 'python-mode-hook (lambda ()
                                 (require 'pyenv-mode-auto))))
@@ -348,6 +350,7 @@
 (use-package dockerfile-mode)
 
 (use-package git-commit
+  :disabled
   :after magit
   :config
   (setq git-commit-summary-max-length 72)
