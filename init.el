@@ -372,6 +372,46 @@
   :config
   (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
 
+;; https://robert.kra.hn/posts/rust-emacs-setup/
+(use-package lsp-mode
+  :ensure t
+  :defer t
+  :init
+  ;; (setq lsp-keymap-prefix "s-l")
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  ;; (add-hook 'lsp-after-open-hook (lambda ()
+  ;;                                  (when (lsp-find-workspace 'rust-analyzer nil)
+  ;;                                    (lsp-rust-analyzer-inlay-hints-mode))))
+  (setq gc-cons-threshold 100000000
+        lsp-idel-delay 0.500
+        read-process-output-max (* 1024 1024))
+
+  ;; (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+
+  ;; (setq lsp-clients-clangd-executable "clangd-14")
+  :hook ((python-mode . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration)
+         (c++-mode . lsp-deferred)
+         (rust-mode . lsp-deferred))
+  :custom
+  ;; (lsp-auto-guess-root nil)
+  ;; (lsp-clients-clangd-executable "clangd-17")
+  (lsp-prefer-flymake nil)
+  (lsp-ui-doc-position 'bottom)
+
+  (lsp-rust-analyzer-server-display-inlay-hints t)
+  (lsp-rust-analyzer-inlay-hints-mode t)
+  (lsp-rust-analyzer-store-path "~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rust-analyzer")
+  :bind (:map lsp-mode-map
+              ("<f1>" . lsp-describe-thing-at-point))
+  :commands lsp)
+
+(use-package lsp-ui
+  ;; :disabled
+  :config
+  ;; (setq lsp-ui-doc-use-webkit t)
+  :commands lsp-ui-mode)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
