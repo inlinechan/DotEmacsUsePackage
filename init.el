@@ -429,6 +429,19 @@
   ;; (setq lsp-ui-doc-use-webkit t)
   :commands lsp-ui-mode)
 
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode))
+
+(use-package hotfuzz
+  :after vertico
+  :ensure t
+  :custom
+  (completion-ignore-case t)
+  :init
+  (setq completion-styles '(hotfuzz)))
+
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
