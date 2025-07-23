@@ -442,6 +442,9 @@
   :init
   (setq completion-styles '(hotfuzz)))
 
+(use-package rust-mode
+  :ensure t)
+
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
