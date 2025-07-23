@@ -332,6 +332,22 @@
   :diminish hc-keys-minor-mode
   :load-path "lisp/")
 
+(use-package python
+  :config
+  (setq python-indent-guess-indent-offset nil)
+  (setq python-indent-offset 4)
+  :bind (:map python-mode-map
+              ("C->" . python-indent-shift-right)
+              ("C-<" . python-indent-shift-left)
+              ("M-*" . pop-tag-mark)))
+
+(use-package flycheck-mypy
+  :disabled
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook (lambda ()
+                                (add-to-list 'flycheck-checkers 'python-mypy))))
+
 ;; http://rakan.me/emacs/python-dev-with-emacs-and-pyenv/
 (use-package pyenv-mode
   :disabled
