@@ -236,35 +236,6 @@
                     'dired-mode-hook))
   (add-hook mode 'enable-gtags-mode))
 
-(use-package flx-ido
-  :config
-  (ido-mode 1)
-  (ido-everywhere 1)
-  (flx-ido-mode 1)
-  ;; disable ido faces to see flx highlights.
-  ;; (setq ido-enable-flex-matching t)
-  ;; (setq ido-use-faces nil)
-  )
-
-(use-package helm-ls-git
-  :disabled
-  :commands helm-browse-project
-  :bind (("C-c C-l" . helm-browse-project)
-         ("C-c g l" . helm-browse-project)))
-
-(use-package helm-ag
-  :disabled
-  :commands helm-ag-project-root
-  :bind ("<f2> g" . helm-ag-project-root))
-
-(use-package swift-mode
-  :disabled
-  )
-
-(use-package flycheck-swift
-  :disabled
-  (eval-after-load 'flycheck '(flycheck-swift-setup)))
-
 (use-package tide
   :disabled
   :config
@@ -292,33 +263,6 @@
   :diminish ""
   :config
   (editorconfig-mode 1))
-
-(use-package ng2-mode
-  :config
-  (setq typescript-indent-level 2)
-  (setq tide-format-options '(:indentSize 2)))
-
-(use-package go
-  :config
-  (add-hook 'go-mode-hook (lambda ()
-                            (set (make-local-variable 'company-backends) '(company-go))
-                            (add-hook 'before-save-hook 'gofmt-before-save)
-                            (local-set-key (kbd "M-.") 'godef-jump)
-                            (local-set-key (kbd "M-*") 'pop-tag-mark)
-                            (company-mode))))
-
-(use-package company-go
-  :after (go))
-
-(use-package helm
-  :disabled
-  :commands webos-helm-find-1
-  :config
-  (setq helm-buffers-fuzzy-matching t
-        helm-buffers-fuzzy-matching t
-        helm-recentf-fuzzy-match t)
-  :bind (("<f2> b" . helm-buffers-list)
-         ("<f2> m" . helm-mini)))
 
 (use-package ivy
   :ensure t
