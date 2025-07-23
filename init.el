@@ -367,128 +367,29 @@
         '(non-empty-second-line
           overlong-summary-line)))
 
-(use-package powerline
-  :config
-  ;;;###autoload
-  (defun powerline-default-theme-without-which-func ()
-    "Setup the default mode-line."
-    (interactive)
-    (setq-default mode-line-format
-                  '("%e"
-                    (:eval
-                     (let* ((active (powerline-selected-window-active))
-                            (mode-line-buffer-id (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
-                            (mode-line (if active 'mode-line 'mode-line-inactive))
-                            (face0 (if active 'powerline-active0 'powerline-inactive0))
-                            (face1 (if active 'powerline-active1 'powerline-inactive1))
-                            (face2 (if active 'powerline-active2 'powerline-inactive2))
-                            (separator-left (intern (format "powerline-%s-%s"
-                                                            (powerline-current-separator)
-                                                            (car powerline-default-separator-dir))))
-                            (separator-right (intern (format "powerline-%s-%s"
-                                                             (powerline-current-separator)
-                                                             (cdr powerline-default-separator-dir))))
-                            (lhs (list (powerline-raw "%*" face0 'l)
-                                       (when powerline-display-buffer-size
-                                         (powerline-buffer-size face0 'l))
-                                       (when powerline-display-mule-info
-                                         (powerline-raw mode-line-mule-info face0 'l))
-                                       (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
-                                       ;; (when (and (boundp 'which-func-mode) which-func-mode)
-                                       ;;   (powerline-raw which-func-format face0 'l))
-                                       (powerline-raw " " face0)
-                                       (funcall separator-left face0 face1)
-                                       (when (and (boundp 'erc-track-minor-mode) erc-track-minor-mode)
-                                         (powerline-raw erc-modified-channels-object face1 'l))
-                                       (powerline-major-mode face1 'l)
-                                       (powerline-process face1)
-                                       (powerline-minor-modes face1 'l)
-                                       (powerline-narrow face1 'l)
-                                       (powerline-raw " " face1)
-                                       (funcall separator-left face1 face2)
-                                       (powerline-vc face2 'r)
-                                       (when (bound-and-true-p nyan-mode)
-                                         (powerline-raw (list (nyan-create)) face2 'l))))
-                            (rhs (list (powerline-raw global-mode-string face2 'r)
-                                       (funcall separator-right face2 face1)
-                                       (unless window-system
-                                         (powerline-raw (char-to-string #xe0a1) face1 'l))
-                                       (powerline-raw "%4l" face1 'l)
-                                       (powerline-raw ":" face1 'l)
-                                       (powerline-raw "%3c" face1 'r)
-                                       (funcall separator-right face1 face0)
-                                       (powerline-raw " " face0)
-                                       (powerline-raw "%6p" face0 'r)
-                                       (when powerline-display-hud
-                                         (powerline-hud face0 face2))
-                                       (powerline-fill face0 0)
-                                       )))
-                       (concat (powerline-render lhs)
-                               (powerline-fill face2 (powerline-width rhs))
-                               (powerline-render rhs)))))))
-  (powerline-default-theme-without-which-func)
-  (load "~/.emacs.d/lisp/custom-powerline.el"))
-
-(use-package diminish
-  :config
-  (diminish 'abbrev-mode)
-  (diminish 'auto-revert-mode)
-  (diminish 'company-mode "Co")
-  (diminish 'eldoc-mode)
-  (diminish 'flycheck-mode "Fc"))
-
-(use-package git-commit
-  :after magit
-  :config
-  (setq git-commit-summary-max-length 72
-        git-commit-known-pseudo-headers
-        '("Signed-off-by"
-          "Acked-by"
-          "Modified-by"
-          "Cc"
-          "Suggested-by"
-          "Reported-by"
-          "Tested-by"
-          "Reviewed-by"))
-  (add-hook 'git-commit-mode-hook (lambda ()
-                                    (setq fill-column 72)))
-  (setq git-commit-style-convention-checks
-        '(non-empty-second-line
-          overlong-summary-line)))
-
 (use-package modern-cpp-font-lock
   :ensure t
   :config
   (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
-
-(defconst tramp-local-coding-commands
-  `(
-    ;; (b64 base64-encode-region base64-decode-region)
-    (uu  tramp-uuencode-region uudecode-decode-region)
-    (pack ,(format tramp-perl-pack "perl") ,(format tramp-perl-unpack "perl")))
-  "List of local coding commands for inline transfer.
-Each item is a list that looks like this:
-
-\(FORMAT ENCODING DECODING)
-
-FORMAT is  symbol describing the encoding/decoding format.  It can be
-`b64' for base64 encoding, `uu' for uu encoding, or `pack' for simple packing.
-
-ENCODING and DECODING can be strings, giving commands, or symbols,
-giving functions.  If they are strings, then they can contain
-the \"%s\" format specifier.  If that specifier is present, the input
-file name will be put into the command line at that spot.  If the
-specifier is not present, the input should be read from standard
-input.
-
-If they are functions, they will be called with two arguments, start
-and end of region, and are expected to replace the region contents
-with the encoded or decoded results, respectively.")
 
 
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
 
-
 (load "~/.emacs.d/lisp/custom.el")
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(clang-format cmake-mode consult-org-roam copilot counsel diminish
+                  dockerfile-mode flycheck-mypy git-commit google-c-style
+                  hotfuzz iregister json-mode lsp-treemacs lsp-ui magit
+                  modern-cpp-font-lock org-journal powerline qml-mode
+                  register-quicknav rust-mode tern tern-auto-complete vertico
+                  web-mode yasnippet yasnippet-snippets))
+ '(package-vc-selected-packages
+   '((copilot :url "https://github.com/copilot-emacs/copilot.el" :branch "main"))))
