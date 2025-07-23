@@ -450,11 +450,13 @@
   :config
   (which-key-mode))
 
-(setq custom-file "~/.emacs.d/custom.el")
-(when (file-exists-p custom-file)
-  (load custom-file))
+(let ((custom-file (concat user-emacs-directory "custom.el")))
+     (when (file-exists-p custom-file)
+       (load custom-file)))
 
-(load "~/.emacs.d/lisp/custom.el")
+(let ((custom-file (concat user-emacs-directory "lisp/custom.el")))
+     (when (file-exists-p custom-file)
+       (load custom-file)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
