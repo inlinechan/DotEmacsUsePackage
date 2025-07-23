@@ -506,11 +506,13 @@ STEP ignored for now."
 
 
 (require 'vc-git)
+(provide 'grep)
+
 (defun grep-find-on-git-root (command-args)
   "Run \\[grep-find] on git root, with user-specified args COMMAND-ARGS."
   (interactive
    (progn
-     (let ((cmd "find . -type f -print0 | xargs -0 -P 10 grep --color -nH --null -e "))
+     (let ((cmd "find . -type f -print0 -not -path \*\.git\* | xargs -0 -P 10 grep --color -nH --null -e "))
        (grep-apply-setting 'grep-find-command (cons cmd (+ 1 (length cmd)))))
      (grep-compute-defaults)
      (if grep-find-command
